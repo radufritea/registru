@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="container">
+	<section class="row">
+		<h1>Vizite de piață</h1>
+		<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+			<a href="{% url 'sales:new_visit' %}" class="btn btn-primary me-md-2">Vizită nouă</a>
+		</div>
+	</section>
+	<section class="row">
+		<div class="col">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>Data și ora</th>
+						<th>Clientul</th>
+						<th>Magazinul</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for visit in visits %}
+					<tr>
+						<td>{{ visit.date_created|date:'d M Y H:m' }}</td>
+						<td>{{ visit.client }}</td>
+						<td>{{ visit.shop }}</td>
+						<td><a href="{% url 'sales:visit' visit.id %}">Detalii</a></td>
+					</tr>
+					{% empty %}
+					<p>Nu au fost realizate vizite încă.</p>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</section>
+</main>
+{% endblock content %}

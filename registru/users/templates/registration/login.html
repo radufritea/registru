@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block page_header %}
+	<div class="container">
+		<h2>    </h2>
+	</div>
+{% endblock page_header %}
+
+{% block content %}
+<div class="container">
+	<div class="row d-flex justify-content-center">
+		<form method='post' action="{% url 'users:login' %}" class="form col-3">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<button type="submit" name="next" class="btn btn-primary">Autentificare</button>
+			<input type="hidden" name="next" value="{% url 'users:employees' %}">
+		</form>
+	</div>		
+</div>
+{% endblock content %}

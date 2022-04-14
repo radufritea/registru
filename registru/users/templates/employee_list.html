@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block page_header %}
+	<h1>Angajații companiei</h1>
+{% endblock page_header %}
+
+{% block content %}
+<section class="container">
+	<div class="row">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">Nume</th>
+					<th scope="col">Email</th>
+					<th scope="col">Telefon</th>
+					<th scope="col">Funcție</th>
+					<th scope="col">Departament</th>
+					<th scope="col">Locație</th>
+					<th scope="col">Data angajării</th>
+					<th scope="col">Data nașterii</th>
+				</tr>
+			</thead>
+			{% for employee in employees %}
+			<tbody>
+				<tr>
+					<td>{{ employee.first_name }} {{ employee.last_name }}</td>
+					<td>{{ employee.email }}</td>
+					<td>{{ employee.phone }}</td>
+					<td>{{ employee.position }}</td>
+					<td>{{ employee.department }}</td>
+					<td>{{ employee.location }}</td>
+					<td>{{ employee.hire_date|date:'d M Y' }}</td>
+					<td>{{ employee.birthday|date:'d M Y' }}</td>
+				</tr>
+			</tbody>
+			{% endfor %}
+		</table>
+	</div>
+</section>
+{% endblock content %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block page_header %}
+	<h1>{{ user.first_name }} {{ user.last_name }}</h1>
+	<a href="{% url 'users:edit_profile' user.id %}">Editează</a>
+{% endblock page_header %}
+
+{% block content %}
+	<table class="table">
+		<tr>
+			<td>Prenume</td>
+			<td>{{ user.first_name }}</td>
+		</tr>
+		<tr>
+			<td>Nume</td>
+			<td>{{ user.last_name }}</td>
+		</tr>
+		<tr>
+			<td>Email</td>
+			<td>{{ user.email }}</td>
+		</tr>
+		<tr>
+			<td>Telefon</td>
+			<td>{{ user.phone }}</td>
+		</tr>
+		<tr>
+			<td>Funcție</td>
+			<td>{{ user.position }}</td>
+		</tr>
+		<tr>
+			<td>Departament</td>
+			<td>{{ user.department }}</td>
+		</tr>
+		<tr>
+			<td>Locație</td>
+			<td>{{ user.location }}</td>
+		</tr>
+		<tr>
+			<td>Data angajării</td>
+			<td>{{ user.hire_date }}</td>
+		</tr>
+		<tr>
+			<td>Data nașterii</td>
+			<td>{{ user.birthday }}</td>
+		</tr>
+	</table>
+{% endblock content %}

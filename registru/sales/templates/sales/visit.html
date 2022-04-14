@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="container">
+	<section class="row">
+		<div class="col">
+			<h4>Raport vizită</h4>
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="basic-addon1">Client:</span>
+				<input type="text" class="form-control fw-bold" value="{{ visit.client }}" aria-label="Client" aria-describedby="basic-addon1">
+				<span class="input-group-text">Magazin:</span>
+  				<input type="text" class="form-control fw-bold" value="{{ visit.shop }}" aria-label="Shop">
+				<span class="input-group-text">Data:</span>
+  				<input type="text" class="form-control fw-bold" value="{{ visit.date_created | date:'d M Y' }}" aria-label="Date">
+			</div>
+		</div>
+	<section class="row">
+		<div class="col mb-3">
+			<h5>Produse prezente la raft:</h5>
+			<ul class="list-group list-group-flush">
+				{% for product in products %}
+					<li class="list-group-item">{{ product.name }}</li>
+				{% empty %}
+					<p>Nu a fost înregistrat nici un produs prezent la raft.</p>
+				{% endfor %}
+			</ul>
+		</div>
+		<div class="col mb-3">
+			<h5>Imagini:</h5>
+		</div>
+	</section>
+	<section class="row d-flex justify-content-center mb-3">
+		<div class="col-6 d-flex justify-content-center">
+			<a class="btn btn-primary" href="{% url 'sales:visits' %}">Înapoi la listă</a>
+		</div>
+	</section>
+	
+		
+	</section>
+</main>
+
+{% endblock content %}

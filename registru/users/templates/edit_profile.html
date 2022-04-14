@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block page_header %}
+	<h1>{{ user.first_name }} {{ user.last_name }}</h1>
+{% endblock page_header %}
+
+{% block content %}
+	<form action="{% url 'users:edit_profile' user.id %}" method='post'>
+		<div class="row-mb-3">
+			<div class="col-md-6">
+				{% csrf_token %}
+				{{ form.as_ul }}
+				<button name='submit'>Salvează modificările</button>
+			</div>
+		</div>
+	</form>
+{% endblock content %}

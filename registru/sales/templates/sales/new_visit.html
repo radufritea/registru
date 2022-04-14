@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+	<div class="row">
+		<h1>Vizită nouă</h1>
+	</div>
+	<section class="row mb-3">
+		<div class="col-6">
+			<form action="{% url 'sales:new_visit' %}" method="post" enctype="multipart/form-data" class="form">
+				{% csrf_token %}
+				{{ form.as_p}}
+				<button class="btn btn-primary" name="submit">Finalizează vizita</button>
+			</form>
+		</div>
+	</section>
+</main>
+	
+{% endblock content %}

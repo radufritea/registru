@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container">
+	<div class="row">
+		<h1>Activitate vânzări</h1>
+	</div>
+	<div class="row  mb-6">
+		<div class="col d-flex justify-content-evenly">
+			<a href="#">Săptămâna anterioară</a>
+			<a href="#">Editează</a>
+			<a href="#">Săptămâna viitoare</a>
+		</div>
+	</div>
+</section>
+
+<section class="container">
+	<div class="row">
+
+	<form action="{% url 'sales:add_plan' %}" method='post' class="form col-12">
+		{% csrf_token %}
+		<table class="table table-sm">
+			<tr>
+				<th></th>
+				<th>Luni</th>
+				<th>Marti</th>
+				<th>Miercuri</th>
+				<th>Joi</th>
+				<th>Vineri</th>
+			</tr>
+			<tr>
+				<td>Locatia</td>
+				<td>{{ form.monday_location }}</td>
+				<td>{{ form.tuesday_location }}</td>
+				<td>{{ form.wendsday_location }}</td>
+				<td>{{ form.thursday_location }}</td>
+				<td>{{ form.friday_location }}</td>
+			</tr>
+			<tr>
+				<td>Obiectivele</td>
+				<td>{{ form.monday_goal }}</td>
+				<td>{{ form.tuesday_goal }}</td>
+				<td>{{ form.wendsday_goal }}</td>
+				<td>{{ form.thursday_goal }}</td>
+				<td>{{ form.friday_goal }}</td>
+			</tr>
+			<tr>
+				<td>Realizarile</td>
+				<td>{{ form.monday_achieved }}</td>
+				<td>{{ form.tuesday_achieved }}</td>
+				<td>{{ form.wendsday_achieved }}</td>
+				<td>{{ form.thursday_achieved }}</td>
+				<td>{{ form.friday_achieved }}</td>
+			</tr>
+	
+		</table>
+		<button name='submit' class="btn btn-primary">Salvează modificările</button>
+	</form>
+</div>
+</section>
+
+{% endblock content %}
