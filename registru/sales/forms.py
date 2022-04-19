@@ -31,21 +31,43 @@ class VisitForm(forms.ModelForm):
 		labels = {"agent": "Nume ASS", "client": "Client", "shop": "Magazin", "shelf_image": "Adauga imagine raft"}
 			
 class PlanForm(forms.ModelForm):
-	my_date = date.today()
-	week_num = my_date.isocalendar()
+	start_date = forms.DateTimeField(
+		input_formats=['%d/%m/%Y %H:%M'],
+		widget=forms.DateInput(
+			attrs={
+				'type': 'date',
+				'class': 'form_input',
+			},
+		),
+	)
 
+	end_date = forms.DateTimeField(
+		input_formats=['%d/%m/%Y %H:%M'],
+		widget=forms.DateInput(
+			attrs={
+				'type': 'date',
+				'class': 'form_input',
+			},
+		),
+	)
 	class Meta:
-		model = WeekPlan 
+		model = WeekPlan
 		fields = "__all__"
 		exclude = ("last-modified",)
 		labels = {
-			"monday_location": "Locatie",
+			"monday_location": "Locație",
 			"monday_goal": "Obiective",
-			"monday_achieved": "Realizari",
-			"tuesday_location": "Locatie",
+			"monday_achieved": "Realizări",
+			"tuesday_location": "Locație",
 			"tuesday_goal": "Obiective",
-			"tuesday_achieved": "Realizari",
-			"wendsday_location": "Locatie",
+			"tuesday_achieved": "Realizări",
+			"wendsday_location": "Locație",
 			"wendsday_goal": "Obiective",
-			"wendsday_achieved": "Realizari",
+			"wendsday_achieved": "Realizări",
+			"thursday_location": "Locație",
+			"thursday_goal": "Obiective",
+			"thursday_achieved": "Realizări",
+			"friday_location": "Locație",
+			"friday_goal": "Obiective",
+			"friday_achieved": "Realizări",
 		}

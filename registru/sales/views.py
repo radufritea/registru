@@ -4,40 +4,59 @@ from datetime import date
 
 from .models import Visit, Client, Shop, Agent, WeekPlan
 from .forms import VisitForm, PlanForm
+from datetime import date, timedelta	
 
 # Create your views here.
 
-def weekly_plan(request):
+def index(request):
+
 	my_date = date.today()
-	year, week_num, day_of_week = my_date.isocalendar()
+	week_day = my_date.weekday()
+	
+	if request.method == "POST":
+		form = PlanForm(data=request.POST)
+		plan = WeekPlan.objects.last()
+		if plan == None:
+			start_date = my_date - timedelta(days=week_day)
+			end_date = my_date + timedelta(days=(4 - week_day))
+		else:
+			start_date = plan.start_date
+			end_date = plan.end_date
+		
+		if form.is_valid():
+			new_plan = form.save(commit=False)
+			agent = Agent.objects.get(user_id=request.user.id)
+			new_plan.agent_id = agent.id
+			new_plan.save()
+			return redirect('sales:index')
 
-	# Create a list with all WeekPlan entries that have week_num field = to the current week's number
-	current_plan = WeekPlan.objects.filter(week_num = week_num).values_list('id')
-
-	# If the list is empty (there is no entry with the current week's number), redirect to add plan
-	if not current_plan:
-		return redirect('sales:add_plan')
-	# if the list is not empty, show the data 
-	else:
-		plan = WeekPlan.objects.get(week_num=week_num)
-		form = PlanForm(instance=plan)	
-		return render(request, 'sales/sales.html', {'form': form})
+	elif request.method == "GET":
+		plan = WeekPlan.objects.last()
+		if plan == None:
+			form=PlanForm()
+			start_date = my_date - timedelta(days=week_day)
+			end_date = my_date + timedelta(days=(4 - week_day))
+		else:
+			form = PlanForm(instance=plan)
+			start_date = plan.start_date
+			end_date = plan.end_date
+	
+	return render(request, 'sales/index.html', {'form': form, 'start_date': start_date, 'end_date': end_date})
 
 def add_plan(request):
-	my_date = date.today()
-	year, week_num, day_of_week = my_date.isocalendar()
 
-	if request.method != 'POST':
-		form = PlanForm()
-	else:
+	if request.method == "POST":
 		form = PlanForm(data=request.POST)
 		if form.is_valid():
 			new_plan = form.save(commit=False)
-			new_plan.week_num = week_num
+			agent = Agent.objects.get(user_id=request.user.id)
+			new_plan.agent_id = agent.id
 			new_plan.save()
-			return redirect('sales:sales')
-	return render(request, 'sales/add_plan.html', {"form": form})
+			return redirect('sales:index')
+	elif request.method == "GET":
+		form=PlanForm()
 
+	return render(request, 'sales/add_plan.html', {'form': form})
 
 def visits(request):
 	visits = Visit.objects.all()

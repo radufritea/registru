@@ -2,11 +2,20 @@
 
 {% block content %}
 <section class="container">
-    <form action="{% url 'sales:add_plan' %}" method="post" class="form">
+    <h1>Planificare săptămâna: {{ start_date|date:"d M Y" }} - {{ end_date|date:"d M Y" }}</h1>
+    <form action="{% url 'sales:index' %}" method="post" class="form">
         {% csrf_token %}
-		<h1>Planificare săptămâna {{ form.start_date }} - {{ form.end_date }}</h1>
         <div class="d-flex justify-content-end">
-            <button type="submit" class="btn btn-primary m-2">Salvează planificare</button>
+            <button type="submit" class="btn btn-primary m-2">Salvează modificări</button>
+            <a href="{% url 'sales:add_plan' %}" class="btn btn-primary m-2">Planificare nouă</a>
+            <button class="btn btn-primary dropdown-toggle m-2" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                Alege alt plan
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">Saptamana 1</a></li>
+                <li><a class="dropdown-item" href="#">Saptamana 2</a></li>
+                <li><a class="dropdown-item" href="#">Saptamana 3</a></li>
+            </ul>
         </div>
         <table class="table table-sm">
             <thead>
@@ -82,11 +91,4 @@
     </form>
 </section>
 
-<script>
-    $(function () {
-      $("#datetimepicker1").datetimepicker({
-        format: 'DD/MM/YYYY HH:mm',
-      });
-    });
-  </script>
-{% endblock content %}
+{% endblock %}

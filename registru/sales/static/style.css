@@ -1,0 +1,12 @@
+.day {
+    font-size: 1.5em;
+}
+
+textarea {
+    height: 120px;
+    width: 500px;
+}
+
+th {
+    font-size: 1.7em;
+}

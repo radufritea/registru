@@ -2,7 +2,6 @@ from django.db import models
 from users.models import User
 from django.utils import timezone
 
-
 # Create your models here.
 class Category(models.Model):
 	name = models.CharField("Nume", max_length=120)
@@ -134,6 +133,7 @@ class Visit(models.Model):
 	agent = models.ForeignKey(Agent, blank=True, null=True, on_delete=models.SET_NULL)
 	client = models.ForeignKey(Client, blank=True, null=True, on_delete=models.SET_NULL)
 	shop = models.ForeignKey(Shop, blank=True, null=True, on_delete=models.SET_NULL)
+	week_num = models.IntegerField()
 	date_created = models.DateTimeField(default=timezone.now, blank=True)
 	last_modified = models.DateTimeField(auto_now=True)
 	products = models.ManyToManyField(Product)
@@ -149,7 +149,9 @@ class Visit(models.Model):
 
 
 class WeekPlan(models.Model):
-	week_num = models.IntegerField(blank=True, default=0)
+	start_date = models.DateField()
+	end_date = models.DateField()
+	agent = models.ForeignKey(Agent, blank=True, null=True, on_delete=models.PROTECT)
 	date_created = models.DateField(default=timezone.now, blank=True)
 	last_modified = models.DateTimeField(auto_now=True)
 	monday_location = models.ForeignKey(County, blank=True, null=True, on_delete=models.SET_NULL, related_name="monday_location")
