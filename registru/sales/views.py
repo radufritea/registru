@@ -9,7 +9,7 @@ from datetime import date, timedelta
 # Create your views here.
 
 def index(request):
-
+# WEEKLY PLANNING
 	my_date = date.today()
 	week_day = my_date.weekday()
 	
@@ -40,11 +40,18 @@ def index(request):
 			form = PlanForm(instance=plan)
 			start_date = plan.start_date
 			end_date = plan.end_date
-	
-	return render(request, 'sales/index.html', {'form': form, 'start_date': start_date, 'end_date': end_date})
+
+# VISITS
+	visits = Visit.objects.all().order_by('-date_created')
+	return render(request, 'sales/index.html', {
+		'form': form, 
+		'start_date': start_date, 
+		'end_date': end_date,
+		'visits': visits,
+	})
+
 
 def add_plan(request):
-
 	if request.method == "POST":
 		form = PlanForm(data=request.POST)
 		if form.is_valid():
@@ -58,10 +65,10 @@ def add_plan(request):
 
 	return render(request, 'sales/add_plan.html', {'form': form})
 
+
 def visits(request):
-	visits = Visit.objects.all()
-	form = VisitForm()
-	return render(request, 'sales/visits.html', {'visits': visits, 'form': form})
+	visits = Visit.objects.all().order_by('-date_created')
+	return render(request, 'sales/visits.html', {'visits': visits})
 
 def visit(request, visit_id):
 	visit = Visit.objects.get(id=visit_id)

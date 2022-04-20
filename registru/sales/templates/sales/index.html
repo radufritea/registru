@@ -90,5 +90,38 @@
         </table>
     </form>
 </section>
+<section class="container">
+    <!-- Vizite -->
+    <div class="row">
+        <div class="col-6">
+            <h1>Vizite de piață</h1>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a href="{% url 'sales:new_visit' %}" class="btn btn-primary me-md-2">Vizită nouă</a>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Data și ora</th>
+                        <th>Clientul (Magazinul)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for visit in visits %}
+                    <tr>
+                        <td>{{ visit.date_created|date:'d M Y H:m' }}</td>
+                        <td><a href="{% url 'sales:visit' visit.id %}">{{ visit.client }} ({{ visit.shop }})</a></td>
+                    </tr>
+                    {% empty %}
+                    <p>Nu au fost realizate vizite încă.</p>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-6">
+            <!-- Informatii concurenta -->
+            <h1>Informatii concurenta</h1>
+        </div>
+    </div>
+</section>
 
 {% endblock %}
