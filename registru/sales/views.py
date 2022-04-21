@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.forms import modelformset_factory
 from datetime import date
+from django.core.paginator import Paginator
 
 from .models import Visit, Client, Shop, Agent, WeekPlan
 from .forms import VisitForm, PlanForm
@@ -43,11 +44,15 @@ def index(request):
 
 # VISITS
 	visits = Visit.objects.all().order_by('-date_created')
+	paginator = Paginator(visits, 10)
+	page_number = request.GET.get('page')
+	page_obj = paginator.get_page(page_number)
+	
 	return render(request, 'sales/index.html', {
 		'form': form, 
 		'start_date': start_date, 
 		'end_date': end_date,
-		'visits': visits,
+		'page_obj': page_obj,
 	})
 
 
