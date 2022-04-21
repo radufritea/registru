@@ -94,7 +94,7 @@
     <!-- Vizite -->
     <div class="row">
         <div class="col-6">
-            <h1 id="vizite">Vizite de piață</h1>
+            <h1 id="vizite"><a href="{% url 'sales:visits' %}" class="text-decoration-none">Vizite de piață</a></h1>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <a href="{% url 'sales:new_visit' %}" class="btn btn-primary me-md-2">Vizită nouă</a>
             </div>
@@ -132,7 +132,6 @@
                 {% else %}
                     <li class="page-item disabled"><a class="page-link" href="#">Înainte</a></li>
                 {% endif %}
-                  
                 </ul>
             </nav>
         </div>

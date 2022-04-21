@@ -73,7 +73,10 @@ def add_plan(request):
 
 def visits(request):
 	visits = Visit.objects.all().order_by('-date_created')
-	return render(request, 'sales/visits.html', {'visits': visits})
+	paginator = Paginator(visits, 10)
+	page_number = request.GET.get('page')
+	page_obj = paginator.get_page(page_number)
+	return render(request, 'sales/visits.html', {'page_obj': page_obj})
 
 def visit(request, visit_id):
 	visit = Visit.objects.get(id=visit_id)
