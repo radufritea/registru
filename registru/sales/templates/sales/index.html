@@ -1,9 +1,12 @@
-{% extends 'base.html' %}
+{% extends 'sales/base.html' %}
 
 {% block content %}
+
 <section class="container">
-    <h1>Planificare săptămâna: {{ start_date|date:"d M Y" }} - {{ end_date|date:"d M Y" }}</h1>
+    {% if user.is_authenticated %}
+    
     <form action="{% url 'sales:index' %}" method="post" class="form">
+        <h1>Planificare săptămâna: {{ start_date|date:"d M Y" }} - {{ end_date|date:"d M Y" }}</h1>
         {% csrf_token %}
         <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary m-2">Salvează modificări</button>
@@ -12,9 +15,9 @@
                 Alege alt plan
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#">Saptamana 1</a></li>
-                <li><a class="dropdown-item" href="#">Saptamana 2</a></li>
-                <li><a class="dropdown-item" href="#">Saptamana 3</a></li>
+                {% for plan in week_plans %}
+                <li><a class="dropdown-item" href="?pk={{ plan.id }}">{{ plan.start_date }} - {{ plan.end_date }}</a></li>
+                {% endfor %}
             </ul>
         </div>
         <table class="table table-sm">
@@ -28,60 +31,40 @@
             <tbody>
                 <tr>
                     <td>
-                        <div class="day">
-                            Luni  
-                        </div>
-                        <div>
-                            Județ {{ form.monday_location }}
-                        </div>
+                        <div class="day">Luni</div>
+                        <div>Județ {{ form.monday_location }}</div>
                     </td>
                     <td>{{ form.monday_goal }}</td>
                     <td>{{ form.monday_achieved }}</td>
                 </tr>
                 <tr>
                     <td>
-                        <div class="day">
-                            Marți  
-                        </div>
-                        <div>
-                            Județ {{ form.tuesday_location }}
-                        </div>
+                        <div class="day">Marți</div>
+                        <div>Județ {{ form.tuesday_location }}</div>
                     </td>
                     <td>{{ form.tuesday_goal }}</td>
                     <td>{{ form.tuesday_achieved }}</td>
                 </tr>
                 <tr>
                     <td>
-                        <div class="day">
-                            Miercuri  
-                        </div>
-                        <div>
-                            Județ {{ form.wendsday_location }}
-                        </div>
+                        <div class="day">Miercuri</div>
+                        <div>Județ {{ form.wendsday_location }}</div>
                     </td>
                     <td>{{ form.wendsday_goal }}</td>
                     <td>{{ form.wendsday_achieved }}</td>
                 </tr>
                 <tr>
                     <td>
-                        <div class="day">
-                            Joi  
-                        </div>
-                        <div>
-                            Județ {{ form.thursday_location }}
-                        </div>
+                        <div class="day">Joi</div>
+                        <div>Județ {{ form.thursday_location }}</div>
                     </td>
                     <td>{{ form.thursday_goal }}</td>
                     <td>{{ form.thursday_achieved }}</td>
                 </tr>
                 <tr>
                     <td>
-                        <div class="day">
-                            Vineri  
-                        </div>
-                        <div>
-                            Județ {{ form.friday_location }}
-                        </div>
+                        <div class="day">Vineri</div>
+                        <div>Județ {{ form.friday_location }}</div>
                     </td>
                     <td>{{ form.friday_goal }}</td>
                     <td>{{ form.friday_achieved }}</td>
@@ -107,28 +90,29 @@
                 </thead>
                 <tbody>
                     {% for visit in page_obj %}
-                    <tr>
-                        <td>{{ visit.date_created|date:'d M Y H:m' }}</td>
-                        <td><a href="{% url 'sales:visit' visit.id %}">{{ visit.client }} ({{ visit.shop }})</a></td>
-                    </tr>
+                        <tr>
+                            <td>{{ visit.date_created|date:'d M Y H:m' }}</td>
+                            <td><a href="{% url 'sales:visit' visit.id %}">{{ visit.client }} ({{ visit.shop }})</a></td>
+                        </tr>
                     {% empty %}
-                    <p>Nu au fost realizate vizite încă.</p>
+                        <p>Nu au fost realizate vizite încă.</p>
                     {% endfor %}
                 </tbody>
             </table>
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                 {% if page_obj.has_previous %}
-                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Înapoi</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }} #vizite">Înapoi</a></li>
                 {% else %}
                 <li class="page-item disabled"><a class="page-link" href="#">Înapoi</a></li>
                 {% endif %}
-                    <!-- <li class="page-item"><a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a></li> -->
+
                 {% for page in page_obj.paginator.page_range %}
                     <li class="page-item"><a class="page-link" href="?page={{ page }} #vizite">{{ page }}</a></li>
                 {% endfor %}
+
                 {% if page_obj.has_next %}
-                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Înainte</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }} #vizite">Înainte</a></li>
                 {% else %}
                     <li class="page-item disabled"><a class="page-link" href="#">Înainte</a></li>
                 {% endif %}
@@ -140,6 +124,12 @@
             <h1>Informații concurență</h1>
         </div>
     </div>
+    {% else %}
+		<p>Pentru a putea accesa aceste informații, trebuie să te autentifici</p>
+		<button class="btn btn-primary me-md-2">
+			<a href="{% url 'users:login' %}">Login</a>
+		</button>
+	{% endif %}
 </section>
 
 {% endblock %}

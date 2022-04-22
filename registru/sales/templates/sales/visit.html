@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'sales/base.html' %}
 
 {% block content %}
 <main class="container">
@@ -27,11 +27,16 @@
 		</div>
 		<div class="col mb-3">
 			<h5>Imagini:</h5>
+			{% if visit.shelf_image %}
+				<img src="{{ visit.shelf_image.url }}" alt="Product image" width="250" height="250">
+			{% else %}
+				<p>Nu există imagini de la această vizită.</p>
+			{% endif %}
 		</div>
 	</section>
 	<section class="row d-flex justify-content-center mb-3">
 		<div class="col-6 d-flex justify-content-center">
-			<a class="btn btn-primary" href="{% url 'sales:visits' %}">Înapoi la listă</a>
+			<a class="btn btn-primary" href="{% url 'sales:visits' %}">Listă vizite</a>
 		</div>
 	</section>
 	

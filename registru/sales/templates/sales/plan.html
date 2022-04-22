@@ -1,0 +1,73 @@
+{% extends 'sales/base.html' %}
+
+{% block content %}
+<form action="{% url 'sales:index' %}" method="post" class="form">
+    <h1>Planificare săptămâna: {{ start_date|date:"d M Y" }} - {{ end_date|date:"d M Y" }}</h1>
+    {% csrf_token %}
+    <div class="d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary m-2">Salvează modificări</button>
+        <a href="{% url 'sales:add_plan' %}" class="btn btn-primary m-2">Planificare nouă</a>
+        <button class="btn btn-primary dropdown-toggle m-2" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            Alege alt plan
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            {% for plan in week_plans %}
+            <li><a class="dropdown-item" href="{% url 'sales:plan' plan.id }">{{ plan.start_date }} - {{ plan.end_date }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th scope="col">Zi/Județ</th>
+                <th scope="col">Obiective</th>
+                <th scope="col">Realizări</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div class="day">Luni</div>
+                    <div>Județ {{ form.monday_location }}</div>
+                </td>
+                <td>{{ form.monday_goal }}</td>
+                <td>{{ form.monday_achieved }}</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="day">Marți</div>
+                    <div>Județ {{ form.tuesday_location }}</div>
+                </td>
+                <td>{{ form.tuesday_goal }}</td>
+                <td>{{ form.tuesday_achieved }}</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="day">Miercuri</div>
+                    <div>Județ {{ form.wendsday_location }}</div>
+                </td>
+                <td>{{ form.wendsday_goal }}</td>
+                <td>{{ form.wendsday_achieved }}</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="day">Joi</div>
+                    <div>Județ {{ form.thursday_location }}</div>
+                </td>
+                <td>{{ form.thursday_goal }}</td>
+                <td>{{ form.thursday_achieved }}</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="day">Vineri</div>
+                    <div>Județ {{ form.friday_location }}</div>
+                </td>
+                <td>{{ form.friday_goal }}</td>
+                <td>{{ form.friday_achieved }}</td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+
+{% endblock %}

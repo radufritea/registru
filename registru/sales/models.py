@@ -131,13 +131,12 @@ class Shop(models.Model):
 
 class Visit(models.Model):
 	agent = models.ForeignKey(Agent, blank=True, null=True, on_delete=models.SET_NULL)
-	client = models.ForeignKey(Client, blank=True, null=True, on_delete=models.SET_NULL)
-	shop = models.ForeignKey(Shop, blank=True, null=True, on_delete=models.SET_NULL)
-	week_num = models.IntegerField()
+	client = models.ForeignKey(Client, blank=True, null=True, on_delete=models.SET_NULL, related_name="client")
+	shop = models.ForeignKey(Shop, blank=True, null=True, on_delete=models.SET_NULL, related_name="shop")
 	date_created = models.DateTimeField(default=timezone.now, blank=True)
 	last_modified = models.DateTimeField(auto_now=True)
 	products = models.ManyToManyField(Product)
-	shelf_image = models.ImageField(upload_to="images", blank=True)
+	shelf_image = models.ImageField(upload_to="images/", blank=True)
 	
 	class Meta:
 		verbose_name = "vizita"
@@ -149,9 +148,9 @@ class Visit(models.Model):
 
 
 class WeekPlan(models.Model):
-	start_date = models.DateField()
-	end_date = models.DateField()
-	agent = models.ForeignKey(Agent, blank=True, null=True, on_delete=models.PROTECT)
+	start_date = models.DateField(blank=True)
+	end_date = models.DateField(blank=True)
+	agent = models.ForeignKey(Agent, blank=True, null=True, on_delete=models.SET_NULL)
 	date_created = models.DateField(default=timezone.now, blank=True)
 	last_modified = models.DateTimeField(auto_now=True)
 	monday_location = models.ForeignKey(County, blank=True, null=True, on_delete=models.SET_NULL, related_name="monday_location")

@@ -1,20 +1,31 @@
-{% extends 'base.html' %}
+{% extends 'sales/base.html' %}
 
 {% block content %}
 
 <main class="container">
+	{% if user.is_authenticated %}
 	<div class="row">
 		<h1>Vizită nouă</h1>
 	</div>
-	<section class="row mb-3">
-		<div class="col-6">
-			<form action="{% url 'sales:new_visit' %}" method="post" enctype="multipart/form-data" class="form">
-				{% csrf_token %}
-				{{ form.as_p}}
-				<button class="btn btn-primary" name="submit">Finalizează vizita</button>
-			</form>
-		</div>
-	</section>
+	<form action="{% url 'sales:new_visit' %}" method="post" enctype="multipart/form-data" class="form row g-3">
+		{% csrf_token %}
+		<table class="table table-sm">
+			<tr>
+				<td scope="col">Client: {{ form.client }}</td>
+				<td scope="col">Magazin: {{ form.shop }}</td>
+				<td scope="col">Data si ora: {{form.date_created }}</td>
+			</tr>
+			<tr>
+				<td scope="col">Produse: {{form.products }}</td>
+			</tr>
+			<tr>
+				<td scope="col">Imagine: {{ form.shelf_image }}</td>
+			</tr>
+		</table>
+				<!-- {{ form.as_p}} -->
+		<button class="btn btn-primary" name="submit">Finalizează vizita</button>
+	</form>
+	{% endif %}
 </main>
 	
 {% endblock content %}

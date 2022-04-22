@@ -22,7 +22,7 @@ class VisitForm(forms.ModelForm):
 		label = "Lista de produse"
 	)
 	
-	shelf_image = forms.ImageField()
+	shelf_image = forms.ImageField(required=False)
 	
 	class Meta:
 		model = Visit
@@ -33,6 +33,7 @@ class VisitForm(forms.ModelForm):
 class PlanForm(forms.ModelForm):
 	start_date = forms.DateTimeField(
 		input_formats=['%d/%m/%Y %H:%M'],
+		required=False,
 		widget=forms.DateInput(
 			attrs={
 				'type': 'date',
@@ -43,6 +44,7 @@ class PlanForm(forms.ModelForm):
 
 	end_date = forms.DateTimeField(
 		input_formats=['%d/%m/%Y %H:%M'],
+		required=False,
 		widget=forms.DateInput(
 			attrs={
 				'type': 'date',
@@ -71,3 +73,6 @@ class PlanForm(forms.ModelForm):
 			"friday_goal": "Obiective",
 			"friday_achieved": "Realizări",
 		}
+	# def __init__(self, *args, **kwargs):
+	# 	super(PlanForm, self).__init__(*args, **kwargs)
+	# 	self.fields['start_date', 'end_date'].required = False
