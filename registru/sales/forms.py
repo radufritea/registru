@@ -31,8 +31,7 @@ class VisitForm(forms.ModelForm):
 		labels = {"agent": "Nume ASS", "client": "Client", "shop": "Magazin", "shelf_image": "Adauga imagine raft"}
 			
 class PlanForm(forms.ModelForm):
-	start_date = forms.DateTimeField(
-		input_formats=['%d/%m/%Y %H:%M'],
+	start_date = forms.DateField(
 		required=False,
 		widget=forms.DateInput(
 			attrs={
@@ -42,8 +41,7 @@ class PlanForm(forms.ModelForm):
 		),
 	)
 
-	end_date = forms.DateTimeField(
-		input_formats=['%d/%m/%Y %H:%M'],
+	end_date = forms.DateField(
 		required=False,
 		widget=forms.DateInput(
 			attrs={
@@ -73,6 +71,3 @@ class PlanForm(forms.ModelForm):
 			"friday_goal": "Obiective",
 			"friday_achieved": "Realizări",
 		}
-	# def __init__(self, *args, **kwargs):
-	# 	super(PlanForm, self).__init__(*args, **kwargs)
-	# 	self.fields['start_date', 'end_date'].required = False

@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.contrib.auth import login
 from django.http import Http404
 
@@ -24,12 +23,15 @@ def profile(request, user_id):
 
 def edit_profile(request, user_id):
 	profile = User.objects.get(id=user_id)
-	if request.method != 'POST':
-		form = UserForm(instance=profile)
-	else:
+	if request.method == 'POST':
 		form = UserForm(instance=profile, data=request.POST)
 		if form.is_valid():
 			form.save()
 			return redirect('users:profile', user_id=user_id)
+		else:
+			print(form.errors)
+	else:
+		form = UserForm(instance=profile)
+	
 	context = {"profile": profile, "form": form}
 	return render(request, 'edit_profile.html', context)

@@ -1,11 +1,15 @@
 {% extends "sales/base.html" %}
 
 {% block page_header %}
+<section class="container">
 	<h1>{{ user.first_name }} {{ user.last_name }}</h1>
-	<a href="{% url 'users:edit_profile' user.id %}">Editează</a>
+	<a href="{% url 'users:edit_profile' user.id %}"class="btn btn-primary">Editează</a>
+</section>
+	
 {% endblock page_header %}
 
 {% block content %}
+<section class="container">
 	<table class="table">
 		<tr>
 			<td>Prenume</td>
@@ -44,4 +48,5 @@
 			<td>{{ user.birthday }}</td>
 		</tr>
 	</table>
+</section>
 {% endblock content %}
