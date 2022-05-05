@@ -1,4 +1,4 @@
-from django	import forms 
+from django import forms 
 from .models import Visit, Client, Product, WeekPlan
 from datetime import date
 
@@ -21,15 +21,15 @@ class VisitForm(forms.ModelForm):
 		choices = [(product.pk, product.name) for product in Product.objects.all()],
 		label = "Lista de produse"
 	)
-	
+
 	shelf_image = forms.ImageField(required=False)
-	
+
 	class Meta:
 		model = Visit
 		fields = "__all__"
 		exclude = ("last-modified",)
 		labels = {"agent": "Nume ASS", "client": "Client", "shop": "Magazin", "shelf_image": "Adauga imagine raft"}
-			
+
 class PlanForm(forms.ModelForm):
 	start_date = forms.DateField(
 		required=True,

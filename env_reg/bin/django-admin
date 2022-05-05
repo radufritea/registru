@@ -1,4 +1,4 @@
-#!/Users/radu/Sites/registru/env_reg/bin/python
+#!/home/radu/registru/env_reg/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
