@@ -32,7 +32,7 @@ class VisitForm(forms.ModelForm):
 			
 class PlanForm(forms.ModelForm):
 	start_date = forms.DateField(
-		required=False,
+		required=True,
 		widget=forms.DateInput(
 			attrs={
 				'type': 'date',
@@ -42,7 +42,7 @@ class PlanForm(forms.ModelForm):
 	)
 
 	end_date = forms.DateField(
-		required=False,
+		required=True,
 		widget=forms.DateInput(
 			attrs={
 				'type': 'date',
