@@ -148,8 +148,8 @@ class Visit(models.Model):
 
 
 class WeekPlan(models.Model):
-	start_date = models.DateField(blank=True, null=True)
-	end_date = models.DateField(blank=True, null=True)
+	start_date = models.DateField(null=True)
+	end_date = models.DateField(null=True)
 	agent = models.ForeignKey(Agent, blank=True, null=True, on_delete=models.SET_NULL)
 	date_created = models.DateField(default=timezone.now, blank=True)
 	last_modified = models.DateTimeField(auto_now=True)

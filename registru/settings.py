@@ -27,7 +27,7 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['92.82.64.58', '127.0.0.1', 'dev.arovit.ro']
+ALLOWED_HOSTS = ['5.2.194.207', '127.0.0.1', 'dev.arovit.ro']
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'registru.wsgi.application'
 
 ADMIN_REORDER = (
     {'app': 'users', 'models': ('users.User', 'users.Location', 'users.Department') },
-    {'app': 'sales', 'models': ('sales.Agent', 'sales.Zone', 'sales.County', 'sales.Channel', 'sales.Client', 'sales.Shop', 'sales.ShopType', 'sales.Product', 'sales.Category', 'sales.Visit')}
+    {'app': 'sales', 'models': ('sales.Agent', 'sales.Zone', 'sales.County', 'sales.Channel', 'sales.Client', 'sales.Shop', 'sales.ShopType', 'sales.Product', 'sales.Category', 'sales.Visit', 'sales.WeekPlan')}
     )
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
