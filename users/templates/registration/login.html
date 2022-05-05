@@ -1,20 +1,47 @@
 {% extends "sales/base.html" %}
 
 {% block page_header %}
-	<div class="container">
-		<h2>    </h2>
-	</div>
+
 {% endblock page_header %}
 
 {% block content %}
 <div class="container">
-	<div class="row d-flex justify-content-center">
-		<form method='post' action="{% url 'users:login' %}" class="form col-3">
-			{% csrf_token %}
-			{{ form.as_p }}
-			<button type="submit" name="next" class="btn btn-primary">Autentificare</button>
-			<input type="hidden" name="next" value="{% url 'users:employees' %}">
-		</form>
+	<div class="row">
+		<div class="col d-flex justify-content-center">
+			<h1>Login</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col d-flex justify-content-center">
+			{% if form.errors %}
+				<p>Emailul și parola sunt greșite sau nu se potrivesc. Te rog încearcă din nou.</p>
+			{% endif %}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col d-flex justify-content-center">
+			<form method='post' action="{% url 'users:login' %}" class="form col-4 d-flex justify-content-center">
+				{% csrf_token %}
+				<table>
+					<tbody class="justify-content-center">
+						<tr class="mb-3 row text-center input-group">
+							<td class="col col-form-label">{{ form.username.label_tag }}</td>
+							<td class="col">{{ form.username }}</td>
+						</tr>
+						<tr class="mb-3 row text-center input-group">
+							<td class="col col-form-label">Parola:</td>
+							<td class="col" id="password">{{ form.password }}</td>
+						</tr>
+						<tr>
+							<td class="mb-3 row text-center">
+								<input type="submit" name="next" class="btn btn-primary" value="Autentificare">
+								<input type="hidden" name="next" value="{% url 'users:employees' %}">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+		</div>
 	</div>		
 </div>
 {% endblock content %}

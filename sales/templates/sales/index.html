@@ -128,10 +128,18 @@
         </div>
     </div>
     {% else %}
-		<p>Pentru a putea accesa aceste informații, trebuie să te autentifici</p>
-		<button class="btn btn-primary me-md-2">
-			<a href="{% url 'users:login' %}">Login</a>
-		</button>
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-4 col-md-offset-6">
+                <h2>Salut!</h2>
+                <p>Bine ai venit pe platforma de management al vânzărilor Arovit!</p>
+                <p>Pentru a putea accesa și adăuga informații, e necesar să te autentifici.</p>
+                <button class="btn btn-primary">
+			        <a href="{% url 'users:login' %}">Login</a>
+		         </button>
+            </div>
+        </div>
+    </div>
 	{% endif %}
 </section>
 

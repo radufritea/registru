@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # Third-party apps
     'admin_reorder',
+    'decouple',
     
     # Default Django apps
     'django.contrib.admin',
@@ -136,7 +137,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_ROOT = BASE_DIR / "static"
-STATIC_URL = "static"
+STATIC_URL = "static/"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
