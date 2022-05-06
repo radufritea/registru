@@ -20,9 +20,12 @@
 	    	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    	{% if user.is_authenticated %}
 	      		<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-	        		<li class="nav-item">
-	          			<a class="nav-link active" aria-current="page" href="{% url 'users:employees' %}">Lista</a>
-	        		</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resurse umane</a>
+						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<li><a class="dropdown-item" href="{% url 'users:employees' %}">Listă angajați</a></li>		
+						</ul>
+					</li>
 	        		<li class="nav-item dropdown">
 	          			<a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Vânzări</a>
 			          	<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -30,6 +33,13 @@
 				            <li><a class="dropdown-item" href="{% url 'sales:competition' %}">Info concurență</a></li>
 			          	</ul>
 	        		</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Rapoarte</a>
+						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<li><a class="dropdown-item" href="{% url 'sales:visits_reports' %}">Rapoarte Storechecks</a></li>
+						  <li><a class="dropdown-item" href="{% url 'sales:competition_reports' %}">Rapoarte despre concurență</a></li>
+						</ul>
+				  </li>
 	        		<li class="nav-item dropdown">
 	          			<a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Contul meu</a>
 			          	<ul class="dropdown-menu" aria-labelledby="navbarDropdown">

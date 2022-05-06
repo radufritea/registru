@@ -1,0 +1,56 @@
+{% extends 'sales/base.html' %}
+
+{% block content %}
+<main>
+    <section class="row">
+        <div class="col">
+            <h4>Rapoarte Storechecks</h4>
+        </div>
+    </section>
+    <section class="row">
+        <div class="col">
+            <form action="{% url 'sales:visits_reports' %}" class="form" method="get">
+                <label for="agents">Selectează ASS:</label>
+                <select name="q" id="agents">
+                    <option disabled selected value> -- toți ASSii -- </option>
+                    {% for agent in agents %}
+                    <option value="{{ agent.id }}">{{ agent.user }}</option>
+                    {% endfor %}
+                  </select>
+                <input type="submit" value="Afișează" class="search">
+            </form>
+        </div>
+    </section>
+    <section>
+        <div class="col">
+            {% if agent %}
+                <h6>Vizitele lui {{ agent.user }}</h6>
+            {% else %}
+                <h6>Toate vizitele</h6>
+            {% endif %}
+            <table>
+                <thead>
+                    <tr>
+                        <td>Data</td>
+                        <td>Client</td>
+                        <td>Magazin</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for visit in visits %}
+                    <tr>
+                        <td>{{ visit.date_created}}</td>
+                        <td>{{ visit.client }}</td>
+                        <td> {{ visit.shop }}</td>
+                        <td> {{ visit.products }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+
+{% endblock content %}

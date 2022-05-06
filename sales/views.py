@@ -124,3 +124,25 @@ def new_visit(request):
 
 def info_competition(request):
 	return render(request, 'sales/info_competition.html')
+
+def visits_reports(request):
+	agents = Agent.objects.all().order_by("user")
+	q = request.GET.get('q')
+	if q != None:
+		selected_agent = Agent.objects.get(id=q)
+	else:
+		selected_agent = None
+
+	if selected_agent == None:
+		visits = Visit.objects.all().order_by("-date_created")
+	else:
+		visits = Visit.objects.filter(agent=selected_agent)
+
+	return render(request, 'sales/visits_reports.html', {
+		'agents': agents,
+		'visits': visits,
+		'agent': selected_agent,
+	})
+
+def competition_reports(request):
+	return render(request, 'sales/competition_reports.html')

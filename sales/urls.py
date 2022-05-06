@@ -12,6 +12,8 @@ urlpatterns = [
 	path('visit/<int:visit_id>/', views.visit, name='visit'),
 	path('new_visit', views.new_visit, name='new_visit'),
 	path('info_competition', views.info_competition, name='competition'),
+	path('visits_reports', views.visits_reports, name='visits_reports'),
+	path('competition_reports', views.competition_reports, name='competition_reports'),
 ]
 
 if settings.DEBUG:
