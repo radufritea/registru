@@ -4,7 +4,7 @@ from datetime import date, timedelta
 from django.core.paginator import Paginator
 from django.urls import reverse
 
-from .models import Visit, Agent, WeekPlan
+from .models import Visit, Agent, WeekPlan, Product
 from .forms import VisitForm, PlanForm
 
 # Create your views here.
@@ -104,10 +104,16 @@ def new_visit(request):
 	if request.method == "POST":
 		form = VisitForm(request.POST, request.FILES)
 		if form.is_valid():
-			new_visit = form.save(commit=False)
 			agent = Agent.objects.get(user_id=request.user.id)
-			new_visit.agent_id = agent.id
-			new_visit.save()
+			client = form.cleaned_data.get('client')
+			shop = form.cleaned_data.get('shop')
+			date_created = form.cleaned_data.get('date_created')
+			shelf_image = form.cleaned_data.get('shelf_image')
+			visit = Visit.objects.create(agent_id = agent.id, client_id = client.id, shop_id = shop.id, date_created = date_created, shelf_image = shelf_image)
+			products = form.cleaned_data.get('products')
+			for item in products:
+				product = Product.objects.get(id=item)
+				visit.products.add(product)
 			return HttpResponseRedirect(reverse('sales:visits'))
 		else:
 			print(form.errors)
