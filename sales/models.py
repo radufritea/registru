@@ -13,7 +13,6 @@ class Category(models.Model):
 	def __str__(self):
 		return self.name
 
-
 class Product(models.Model):
 	name = models.CharField("Nume", max_length=120)
 	weight = models.CharField("Gramaj", max_length=20)
@@ -145,7 +144,6 @@ class Visit(models.Model):
 	def __str__(self):
 		name = f"{self.client} - {self.shop} - {self.date_created}"
 		return name
-
 
 class WeekPlan(models.Model):
 	start_date = models.DateField(null=True)
