@@ -27,7 +27,7 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['5.2.194.207', '127.0.0.1', 'dev.arovit.ro']
+ALLOWED_HOSTS = ['dev.arovit.ro', '89.34.72.126', '127.0.0.1', '192.168.10.193']
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -147,3 +147,7 @@ MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+CSRF_TRUSTED_ORIGINS = ['https://*.arovit.ro','https://*.127.0.0.1']
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
