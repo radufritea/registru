@@ -134,9 +134,12 @@ class Visit(models.Model):
 	shop = models.ForeignKey(Shop, blank=True, null=True, on_delete=models.SET_NULL, related_name="shop")
 	date_created = models.DateTimeField(default=timezone.now, blank=True)
 	last_modified = models.DateTimeField(auto_now=True)
-	products = models.ManyToManyField(Product)
+	products = models.ManyToManyField(Product, related_name="products")
+	products_ordered = models.ManyToManyField(Product, related_name="products_ordered")
 	shelf_image = models.ImageField(upload_to="images/", blank=True)
-	
+	quantity_ordered = models.IntegerField("Baxuri comandate", blank=True, null=True)
+	observations = models.TextField(blank=True, null=True)
+
 	class Meta:
 		verbose_name = "vizita"
 		verbose_name_plural = "vizite"
