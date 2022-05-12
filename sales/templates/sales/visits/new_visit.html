@@ -7,12 +7,12 @@
 	<div class="row">
 		<h1>Vizită nouă</h1>
 	</div>
-	<form action="{% url 'sales:new_visit' %}" method="post" enctype="multipart/form-data" class="form row g-3">
+	<form action="{% url 'sales:new_visit' shop_id %}" method="post" enctype="multipart/form-data" class="form row g-3">
 		{% csrf_token %}
 		<table class="table table-sm">
 			<tr>
-				<td scope="col">Client: {{ form.client }}</td>
-				<td scope="col">Magazin: {{ form.shop }}</td>
+				<td scope="col">Client: {{ client_name }}</td>
+				<td scope="col">Magazin: {{ shop_name }}</td>
 				<td scope="col">Data: {{ form.date_created }}</td>
 			</tr>
 			<tr>

@@ -4,7 +4,7 @@ from datetime import date, timedelta
 from django.core.paginator import Paginator
 from django.urls import reverse
 
-from .models import Visit, Agent, WeekPlan, Product
+from .models import Visit, Agent, WeekPlan, Product, Client, Shop
 from .forms import VisitForm, PlanForm
 
 # Create your views here.
@@ -99,14 +99,45 @@ def visit(request, visit_id):
         'products': products
         })
 
+def select_client(request):
+    if request.method == "GET":
+        agent_clients = []
+        clients = Client.objects.all()
+        agent = Agent.objects.get(user=request.user)
+        for client in clients:
+            if client.zone == agent.zone:
+                agent_clients.append(client.name)
+        context = {'agent_clients': agent_clients}
+    
+    elif request.method == "POST":
+        client = request.POST.get('client')
+        context = {'client': client}
+        return redirect('sales:select_shop', client=client)
+    
+    return render(request, 'sales/visits/select_client.html', context)
 
-def new_visit(request):
-    if request.method == "POST":
+def select_shop(request, client):
+    if request.method == "GET":
+        client_obj = Client.objects.get(name=client)
+        shop_list = client_obj.shop_set.all()
+        context = {'shop_list': shop_list, 'client': client}
+    elif request.method == "POST":
+        shop_id = request.POST.get('shop')
+        return redirect('sales:new_visit', shop_id=shop_id)
+
+    return render(request, 'sales/visits/select_shop.html', context)
+
+def new_visit(request, shop_id):
+    shop = Shop.objects.get(id=shop_id)
+    if request.method == "GET":
+        form=VisitForm()
+        context = {'form': form, 'shop_id': shop_id, 'client_name': shop.client.name, 'shop_name': shop.name}
+
+    elif request.method == "POST":
         form = VisitForm(request.POST, request.FILES)
         if form.is_valid():
             agent = Agent.objects.get(user_id=request.user.id)
-            client = form.cleaned_data.get('client')
-            shop = form.cleaned_data.get('shop')
+            client = shop.client
             date_created = form.cleaned_data.get('date_created')
             shelf_image = form.cleaned_data.get('shelf_image')
             visit = Visit.objects.create(agent_id = agent.id, client_id = client.id, shop_id = shop.id, date_created = date_created, shelf_image = shelf_image)
@@ -117,11 +148,8 @@ def new_visit(request):
             return HttpResponseRedirect(reverse('sales:visits'))
         else:
             print(form.errors)
-    
-    elif request.method == "GET":
-        form=VisitForm()
 
-    return render(request, 'sales/new_visit.html', {'form': form})
+    return render(request, 'sales/visits/new_visit.html', context)
 
 
 def info_competition(request):
