@@ -1,5 +1,5 @@
 from django import forms 
-from .models import Visit, Client, Product, WeekPlan
+from .models import Visit, Product, WeekPlan, County
 from datetime import date
 
 class VisitForm(forms.ModelForm):
@@ -38,23 +38,14 @@ class VisitForm(forms.ModelForm):
 class PlanForm(forms.ModelForm):
 	start_date = forms.DateField(
 		required=True,
-		widget=forms.DateInput(
-			attrs={
-				'type': 'date',
-				'class': 'form_input',
-			},
-		),
+		widget=forms.DateInput(attrs={'type': 'date', 'class': 'form_input',},),
 	)
 
 	end_date = forms.DateField(
 		required=True,
-		widget=forms.DateInput(
-			attrs={
-				'type': 'date',
-				'class': 'form_input',
-			},
-		),
+		widget=forms.DateInput(attrs={'type': 'date','class': 'form_input',},),
 	)
+
 	class Meta:
 		model = WeekPlan
 		fields = "__all__"

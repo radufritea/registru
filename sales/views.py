@@ -4,7 +4,7 @@ from datetime import date, timedelta
 from django.core.paginator import Paginator
 from django.urls import reverse
 
-from .models import Visit, Agent, WeekPlan, Product, Client, Shop
+from .models import Visit, Agent, WeekPlan, Product, Client, Shop, County
 from .forms import VisitForm, PlanForm
 
 # Create your views here.
@@ -23,8 +23,16 @@ def index(request):
     paginator = Paginator(visits, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+
+    agent_counties = []
+    counties = County.objects.all().order_by('name')
+    agent = Agent.objects.get(user_id=request.user)
+    for county in counties:
+        if county.zone == agent.zone:
+            agent_counties.append(county)
     
     if request.method == "GET":
+
     # first acces, no plans in db
         if not week_plans:
             form=PlanForm(initial={'start_date': start_date, 'end_date': end_date})
@@ -36,6 +44,38 @@ def index(request):
             
             form = PlanForm(instance=plan)
 
+        # get county for each day of the week
+        if plan.monday_location != None:
+            monday_location = int(plan.monday_location.id)
+        elif request.GET.get('monday_location') != None:
+            monday_location = int(request.GET.get('monday_location'))
+        else:
+            monday_location = None
+        if plan.tuesday_location != None:
+            tuesday_location = int(plan.tuesday_location.id)
+        elif request.GET.get('tuesday_location') != None:
+            tuesday_location = int(request.GET.get('tuesday_location'))
+        else:
+            tuesday_location = None
+        if plan.wendsday_location != None:
+            wendsday_location = int(plan.wendsday_location.id)
+        elif request.GET.get('wendsday_location') != None:
+            wendsday_location = int(request.GET.get('wendsday_location'))
+        else:
+            wendsday_location = None
+        if plan.thursday_location != None:
+            thursday_location = int(plan.thursday_location.id)
+        elif request.GET.get('thursday_location') != None:
+            thursday_location = int(request.GET.get('thursday_location'))
+        else:
+            thursday_location = None
+        if plan.friday_location != None:
+            friday_location = int(plan.friday_location.id)
+        elif request.GET.get('friday_location') != None:
+            friday_location = int(request.GET.get('friday_location'))
+        else:
+            friday_location = None
+
     elif request.method == 'POST':
         form = PlanForm(request.POST, initial={'start_date': start_date, 'end_date': end_date})
         if form.is_valid():
@@ -44,13 +84,18 @@ def index(request):
             new_plan.agent_id = agent.id
             new_plan.start_date = request.POST.get('start_date')
             new_plan.end_date = request.POST.get('end_date')
+            monday_location = request.POST.get('monday_location')
+            tuesday_location = request.POST.get('tuesday_location')
+            wendsday_location = request.POST.get('wendsday_location')
+            thursday_location = request.POST.get('thursday_location')
+            friday_location = request.POST.get('friday_location')
             if plan == None:
                 new_plan.id = 1
             else:
                 new_plan.id = request.POST.get('plan_id')
             new_plan.save()
-            print(new_plan.end_date)
-            return redirect(request.META['HTTP_REFERER'])
+            monday_location = str(new_plan.monday_location.id)
+            return redirect("/"+"?monday_location="+monday_location)
         else:
             print (form.errors)
     
@@ -59,6 +104,12 @@ def index(request):
         'plan': plan,
         'page_obj': page_obj,
         'week_plans': week_plans,
+        'agent_counties': agent_counties,
+        'monday_location': monday_location,
+        'tuesday_location': tuesday_location,
+        'wendsday_location': wendsday_location,
+        'thursday_location': thursday_location,
+        'friday_location': friday_location,
     })
 
 
@@ -73,8 +124,9 @@ def add_plan(request):
             return redirect('sales:index')
     elif request.method == "GET":
         form=PlanForm()
-
-    return render(request, 'sales/add_plan.html', {'form': form})
+    
+    context = {'form': form}
+    return render(request, 'sales/add_plan.html', context)
 
 
 def plan(request, pk):
