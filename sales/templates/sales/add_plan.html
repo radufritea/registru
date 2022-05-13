@@ -23,7 +23,11 @@
                             Luni  
                         </div>
                         <div>
-                            Județ {{ form.monday_location }}
+                            <select name="monday_location" id="id_monday_locaiton">
+                                {% for county in agent_counties %}
+                                    <option value="{{ county.id }}">{{ county.name }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </td>
                     <td>{{ form.monday_goal }}</td>
@@ -35,7 +39,11 @@
                             Marți  
                         </div>
                         <div>
-                            Județ {{ form.tuesday_location }}
+                            <select name="tuesday_location" id="id_tuesday_locaiton">
+                                {% for county in agent_counties %}
+                                    <option value="{{ county.id }}"{% if county.id == tuesday_location %} selected{% endif %}>{{ county.name }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </td>
                     <td>{{ form.tuesday_goal }}</td>
@@ -47,7 +55,11 @@
                             Miercuri  
                         </div>
                         <div>
-                            Județ {{ form.wendsday_location }}
+                            <select name="wendsday_location" id="id_wendsday_locaiton">
+                                {% for county in agent_counties %}
+                                    <option value="{{ county.id }}"{% if county.id == wendsday_location %} selected{% endif %}>{{ county.name }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </td>
                     <td>{{ form.wendsday_goal }}</td>
@@ -59,7 +71,11 @@
                             Joi  
                         </div>
                         <div>
-                            Județ {{ form.thursday_location }}
+                            <select name="thursday_location" id="id_thursday_locaiton">
+                                {% for county in agent_counties %}
+                                    <option value="{{ county.id }}"{% if county.id == thursday_location %} selected{% endif %}>{{ county.name }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </td>
                     <td>{{ form.thursday_goal }}</td>
@@ -71,7 +87,11 @@
                             Vineri  
                         </div>
                         <div>
-                            Județ {{ form.friday_location }}
+                            <select name="friday_location" id="id_friday_locaiton">
+                                {% for county in agent_counties %}
+                                    <option value="{{ county.id }}"{% if county.id == friday_location %} selected{% endif %}>{{ county.name }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </td>
                     <td>{{ form.friday_goal }}</td>

@@ -12,33 +12,38 @@ my_date = date.today()
 week_day = my_date.weekday()
 
 def index(request):
-# WEEKLY PLANNING
+# Get date, weekday and existing plan, if any
     pk = request.GET.get('pk')
     start_date = my_date - timedelta(days=week_day)
     end_date = my_date + timedelta(days=(4 - week_day))
     plan = WeekPlan.objects.order_by('start_date').last()
     week_plans = WeekPlan.objects.all().order_by('-start_date')
-    
+
+# If the user is an agent, get visits and paginate them
     agent = Agent.objects.get(user_id=request.user)
     visits = Visit.objects.filter(agent=agent.id).order_by('-date_created')
     paginator = Paginator(visits, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+# Select only the counties from agent's zone
     agent_counties = []
     counties = County.objects.all().order_by('name')
     for county in counties:
         if county.zone == agent.zone:
             agent_counties.append(county)
-    
-    if request.method == "GET":
 
-    # first acces, no plans in db
+# load homepage
+    if request.method == "GET":
+    
+    # The agent/user has no previous plans added, show blank form
         if not week_plans:
             form=PlanForm(initial={'start_date': start_date, 'end_date': end_date})
         else:
+    # The plan is selected from homepage dropdown, show plan with specific pk
             if pk != None:
                 plan = WeekPlan.objects.get(id=pk)
+    # Automaticlly load the plan where today is within start_date and end_date of the plan
             else:
                 plan = WeekPlan.objects.get(start_date=start_date)	
             
@@ -76,6 +81,7 @@ def index(request):
         else:
             friday_location = None
 
+# Save changes to currently showed plan
     elif request.method == 'POST':
         form = PlanForm(request.POST, initial={'start_date': start_date, 'end_date': end_date})
         if form.is_valid():
@@ -89,6 +95,7 @@ def index(request):
             wendsday_location = request.POST.get('wendsday_location')
             thursday_location = request.POST.get('thursday_location')
             friday_location = request.POST.get('friday_location')
+            # if this is the first plan of the agent, set plan id to 1
             if plan == None:
                 new_plan.id = 1
             else:
@@ -114,18 +121,41 @@ def index(request):
 
 
 def add_plan(request):
+    agent = Agent.objects.get(user_id=request.user.id)
+
     if request.method == "POST":
         form = PlanForm(data=request.POST)
+
         if form.is_valid():
             new_plan = form.save(commit=False)
-            agent = Agent.objects.get(user_id=request.user.id)
             new_plan.agent_id = agent.id
+            monday_location = request.POST.get('monday_location')
+            tuesday_location = request.POST.get('tuesday_location')
+            wendsday_location = request.POST.get('wendsday_location')
+            thursday_location = request.POST.get('thursday_location')
+            friday_location = request.POST.get('friday_location')
             new_plan.save()
-            return redirect('sales:index')
+        
+        context = {
+            'form': form, 
+            'monday_location': monday_location,
+            'tuesday_location': tuesday_location,
+            'wendsday_location': wendsday_location,
+            'thursday_location': thursday_location,
+            'friday_location': friday_location,
+        }
+        return redirect('sales:index')
+
     elif request.method == "GET":
         form=PlanForm()
-    
-    context = {'form': form}
+        agent_counties = []
+        counties = County.objects.all().order_by('name')
+        for county in counties:
+            if county.zone == agent.zone:
+                agent_counties.append(county)
+
+        context = {'form': form, 'agent_counties': agent_counties}
+
     return render(request, 'sales/add_plan.html', context)
 
 
