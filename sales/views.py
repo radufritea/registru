@@ -19,14 +19,14 @@ def index(request):
     plan = WeekPlan.objects.order_by('start_date').last()
     week_plans = WeekPlan.objects.all().order_by('-start_date')
     
-    visits = Visit.objects.all().order_by('-date_created')
+    agent = Agent.objects.get(user_id=request.user)
+    visits = Visit.objects.filter(agent=agent.id).order_by('-date_created')
     paginator = Paginator(visits, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     agent_counties = []
     counties = County.objects.all().order_by('name')
-    agent = Agent.objects.get(user_id=request.user)
     for county in counties:
         if county.zone == agent.zone:
             agent_counties.append(county)
@@ -136,7 +136,8 @@ def plan(request, pk):
 
 
 def visits(request):
-    visits = Visit.objects.all().order_by('-date_created')
+    agent = Agent.objects.get(user_id=request.user.id)
+    visits = Visit.objects.filter(agent=agent.id).order_by('-date_created')
     paginator = Paginator(visits, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
