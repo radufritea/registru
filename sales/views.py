@@ -11,6 +11,7 @@ from .forms import VisitForm, PlanForm
 my_date = date.today()
 week_day = my_date.weekday()
 
+
 def index(request):
 # Get date, weekday and existing plan, if any
     pk = request.GET.get('pk')
@@ -19,23 +20,25 @@ def index(request):
     plan = WeekPlan.objects.order_by('start_date').last()
     week_plans = WeekPlan.objects.all().order_by('-start_date')
 
-# If the user is an agent, get visits and paginate them
-    agent = Agent.objects.get(user_id=request.user)
-    visits = Visit.objects.filter(agent=agent.id).order_by('-date_created')
+    visits = Visit.objects.all().order_by('-date_created')
     paginator = Paginator(visits, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-
-# Select only the counties from agent's zone
     agent_counties = []
     counties = County.objects.all().order_by('name')
-    for county in counties:
-        if county.zone == agent.zone:
-            agent_counties.append(county)
+    
+    if request.user.is_authenticated:
+        # If the user is an agent, get visits and paginate them
+        agent = Agent.objects.get(user_id=request.user)
+        visits = Visit.objects.filter(agent=agent.id).order_by('-date_created')
+        
+        # Select only the counties from agent's zone  
+        for county in counties:
+            if county.zone == agent.zone:
+                agent_counties.append(county)
 
 # load homepage
     if request.method == "GET":
-    
     # The agent/user has no previous plans added, show blank form
         if not week_plans:
             form=PlanForm(initial={'start_date': start_date, 'end_date': end_date})
@@ -182,6 +185,7 @@ def visit(request, visit_id):
         'products': products
         })
 
+
 def select_client(request):
     if request.method == "GET":
         agent_clients = []
@@ -199,6 +203,7 @@ def select_client(request):
     
     return render(request, 'sales/visits/select_client.html', context)
 
+
 def select_shop(request, client):
     if request.method == "GET":
         client_obj = Client.objects.get(name=client)
@@ -209,6 +214,7 @@ def select_shop(request, client):
         return redirect('sales:new_visit', shop_id=shop_id)
 
     return render(request, 'sales/visits/select_shop.html', context)
+
 
 def new_visit(request, shop_id):
     shop = Shop.objects.get(id=shop_id)
@@ -238,6 +244,7 @@ def new_visit(request, shop_id):
 def info_competition(request):
     return render(request, 'sales/info_competition.html')
 
+
 def visits_reports(request):
     agents = Agent.objects.all().order_by("user")
     q = request.GET.get('q')
@@ -256,6 +263,7 @@ def visits_reports(request):
         'visits': visits,
         'agent': selected_agent,
     })
+
 
 def competition_reports(request):
     return render(request, 'sales/competition_reports.html')
