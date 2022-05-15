@@ -14,31 +14,38 @@ week_day = my_date.weekday()
 
 def index(request):
 # Get date, weekday and existing plan, if any
-    pk = request.GET.get('pk')
-    start_date = my_date - timedelta(days=week_day)
-    end_date = my_date + timedelta(days=(4 - week_day))
-    plan = WeekPlan.objects.order_by('start_date').last()
-    week_plans = WeekPlan.objects.all().order_by('-start_date')
+   
 
-    visits = Visit.objects.all().order_by('-date_created')
-    paginator = Paginator(visits, 10)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    agent_counties = []
-    counties = County.objects.all().order_by('name')
-    
-    if request.user.is_authenticated:
+# load homepage
+    if request.method == "GET":
+        if request.user.is_authenticated:
         # If the user is an agent, get visits and paginate them
-        agent = Agent.objects.get(user_id=request.user)
-        visits = Visit.objects.filter(agent=agent.id).order_by('-date_created')
-        
+            try:
+                agent = Agent.objects.get(user_id=request.user)
+                visits = Visit.objects.filter(agent=agent.id).order_by('-date_created')
+            except Agent.DoesNotExist:
+                agent = None
+                return redirect ('users:employees')
+        else:
+            return redirect('users:login')
+
+        pk = request.GET.get('pk')
+        start_date = my_date - timedelta(days=week_day)
+        end_date = my_date + timedelta(days=(4 - week_day))
+        plan = WeekPlan.objects.order_by('start_date').last()
+        week_plans = WeekPlan.objects.all().order_by('-start_date')
+
+        visits = Visit.objects.all().order_by('-date_created')
+        paginator = Paginator(visits, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        agent_counties = []
+        counties = County.objects.all().order_by('name')
+    
         # Select only the counties from agent's zone  
         for county in counties:
             if county.zone == agent.zone:
                 agent_counties.append(county)
-
-# load homepage
-    if request.method == "GET":
     # The agent/user has no previous plans added, show blank form
         if not week_plans:
             form=PlanForm(initial={'start_date': start_date, 'end_date': end_date})
@@ -120,6 +127,7 @@ def index(request):
         'wendsday_location': wendsday_location,
         'thursday_location': thursday_location,
         'friday_location': friday_location,
+        'agent': agent,
     })
 
 
