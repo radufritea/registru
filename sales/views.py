@@ -7,16 +7,13 @@ from django.urls import reverse
 from .models import Visit, Agent, WeekPlan, Product, Client, Shop, County
 from .forms import VisitForm, PlanForm
 
-# Create your views here.
+# Set date variables
 my_date = date.today()
 week_day = my_date.weekday()
 start_date = my_date - timedelta(days=week_day)
 end_date = my_date + timedelta(days=(4 - week_day))
 
 def index(request):
-# Get date, weekday and existing plan, if any
-   
-
 # load homepage
     if request.method == "GET":
         if request.user.is_authenticated:
