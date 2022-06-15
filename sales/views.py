@@ -10,7 +10,8 @@ from .forms import VisitForm, PlanForm
 # Create your views here.
 my_date = date.today()
 week_day = my_date.weekday()
-
+start_date = my_date - timedelta(days=week_day)
+end_date = my_date + timedelta(days=(4 - week_day))
 
 def index(request):
 # Get date, weekday and existing plan, if any
@@ -30,9 +31,7 @@ def index(request):
             return redirect('users:login')
 
         pk = request.GET.get('pk')
-        start_date = my_date - timedelta(days=week_day)
-        end_date = my_date + timedelta(days=(4 - week_day))
-        plan = WeekPlan.objects.order_by('start_date').last()
+        
         week_plans = WeekPlan.objects.all().order_by('-start_date')
 
         visits = Visit.objects.all().order_by('-date_created')
@@ -48,7 +47,8 @@ def index(request):
                 agent_counties.append(county)
     # The agent/user has no previous plans added, show blank form
         if not week_plans:
-            form=PlanForm(initial={'start_date': start_date, 'end_date': end_date})
+            plan = WeekPlan.objects.create(id=1, start_date=start_date, end_date=end_date, agent=agent, date_created=my_date)
+            # form=PlanForm(initial={'start_date': start_date, 'end_date': end_date})
         else:
     # The plan is selected from homepage dropdown, show plan with specific pk
             if pk != None:
@@ -57,7 +57,7 @@ def index(request):
             else:
                 plan = WeekPlan.objects.get(start_date=start_date)	
             
-            form = PlanForm(instance=plan)
+        form = PlanForm(instance=plan)
 
         # get county for each day of the week
         if plan.monday_location != None:
@@ -106,10 +106,10 @@ def index(request):
             thursday_location = request.POST.get('thursday_location')
             friday_location = request.POST.get('friday_location')
             # if this is the first plan of the agent, set plan id to 1
-            if plan == None:
-                new_plan.id = 1
-            else:
-                new_plan.id = request.POST.get('plan_id')
+            # if plan == None:
+            #     new_plan.id = 1
+            # else:
+            new_plan.id = request.POST.get('plan_id')
             new_plan.save()
             monday_location = str(new_plan.monday_location.id)
             return redirect("/"+"?monday_location="+monday_location)
@@ -242,10 +242,11 @@ def new_visit(request, shop_id):
             for item in products:
                 product = Product.objects.get(id=item)
                 visit.products.add(product)
+            
             return HttpResponseRedirect(reverse('sales:visits'))
         else:
             print(form.errors)
-
+        context = {'form': form, 'visit': visit}
     return render(request, 'sales/visits/new_visit.html', context)
 
 
