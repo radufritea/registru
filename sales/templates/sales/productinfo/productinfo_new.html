@@ -1,0 +1,12 @@
+{% extends 'sales/base.html' %}
+
+{% block content %}
+<h1>Adauga produs nou</h1>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Salveaza">
+</form>
+
+{% endblock content %}

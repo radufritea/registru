@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from datetime import date, timedelta
 from django.core.paginator import Paginator
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .models import Visit, Agent, WeekPlan, Product, Client, Shop, County
+from .models import Visit, Agent, WeekPlan, Product, Client, Shop, County, ProductInfo, PriceInfo
 from .forms import VisitForm, PlanForm
 
 # Set date variables
@@ -239,11 +240,12 @@ def new_visit(request, shop_id):
             for item in products:
                 product = Product.objects.get(id=item)
                 visit.products.add(product)
-            
             return HttpResponseRedirect(reverse('sales:visits'))
         else:
             print(form.errors)
+        
         context = {'form': form, 'visit': visit}
+
     return render(request, 'sales/visits/new_visit.html', context)
 
 
@@ -273,3 +275,34 @@ def visits_reports(request):
 
 def competition_reports(request):
     return render(request, 'sales/competition_reports.html')
+
+
+### Info on competition section with generic views
+
+class ProductInfoCreateView(CreateView):
+    model = ProductInfo
+    template_name = 'sales/productinfo/productinfo_new.html'
+    fields = '__all__'
+    context_object_name = 'productinfo'
+
+class ProductInfoDetailView(DetailView):
+    model = ProductInfo
+    template_name = 'sales/productinfo/productinfo.html'
+    context_object_name = 'productinfo'  
+
+class ProductInfoListView(ListView):
+    model = ProductInfo
+    template_name = 'sales/productinfo/productinfo_list.html'
+    fields = '__all__'
+    context_object_name = 'productinfo_list'
+
+class ProductInfoUpdateView(UpdateView):
+    model = ProductInfo
+    template_name = 'sales/productinfo/productinfo_edit.html'
+    fields = '__all__'
+    context_object_name = 'productinfo'
+
+class ProductInfoDeleteView(DeleteView):
+    model = ProductInfo
+    template_name = 'sales/productinfo/productinfo_delete.html'
+    success_url = reverse_lazy('sales:productinfo_list')

@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import User
 from django.utils import timezone
+from django.urls import reverse
 
 # Create your models here.
 class Category(models.Model):
@@ -173,3 +174,50 @@ class WeekPlan(models.Model):
 	class Meta:
 		verbose_name = "plan saptamanal"
 		verbose_name_plural = "planuri saptamanale"
+
+
+class Brand(models.Model):
+	name = models.CharField("Brand", max_length=100)
+
+	def __str__(self):
+		return self.name
+
+class Producer(models.Model):
+	name = models.CharField("Producator", max_length=100)
+
+	def __str__(self):
+		return self.name
+
+
+class ProductInfo(models.Model):
+	name = models.CharField("Nume produs", max_length=254)
+	weight = models.CharField("Gramaj", max_length=20)
+	unit = models.CharField("U.M.", max_length=10)
+	category = models.ForeignKey("Category", blank=True, null=True, on_delete=models.SET_NULL, verbose_name="gama")
+	packing = models.CharField("Ambalaj", max_length=25, blank=True)
+	brand = models.ForeignKey("Brand", on_delete=models.CASCADE, verbose_name="brand")
+	producer = models.ForeignKey("Producer", on_delete=models.CASCADE, verbose_name="producator")
+
+	class Meta:
+		verbose_name = "produs concurenta"
+		verbose_name_plural = "produse concurenta"
+
+	def __str__(self):
+		product_name = f"{self.brand} - {self.name}"
+		return product_name
+	
+	def get_absolute_url(self):
+		return reverse('sales:productinfo_detail', args=[str(self.id)])
+
+
+class PriceInfo(models.Model):
+	agent = models.ForeignKey(Agent, blank=True, null=True, on_delete=models.SET_NULL)
+	client = models.ForeignKey(Client, blank=True, null=True, on_delete=models.SET_NULL, related_name="priceinfo_client")
+	shop = models.ForeignKey(Shop, blank=True, null=True, on_delete=models.SET_NULL, related_name="priceinfo_shop")
+	date_created = models.DateTimeField(default=timezone.now, blank=True)
+	last_modified = models.DateTimeField(auto_now=True)
+	price_value = models.FloatField()
+
+	class Meta:
+		verbose_name = "inregistrare pret"
+		verbose_name_plural = "inregistrari pret"

@@ -1,0 +1,41 @@
+{% extends 'sales/base.html' %}
+
+{% block content %}
+<section class="row">
+    <div class="col">
+        <h1>Lista produselor pentru raportul de concurenta</h1>
+        <a href="{% url 'sales:productinfo_new' %}">Adauga produs nou</a>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Nuemele produsului</th>
+                    <th>Gramaj</th>
+                    <th>UM</th>
+                    <th>Gama</th>
+                    <th>Brand</th>
+                    <th>Producator</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in productinfo_list %}
+                <tr>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.weight }}</td>
+                    <td>{{ product.unit }}</td>
+                    <td>{{ product.category }}</td>
+                    <td>{{ product.brand }}</td>
+                    <td>{{ product.producer }}</td>
+                    <td> <a href="{% url 'sales:productinfo_edit' product.pk %}">Editeaza</a></td>
+                    <td><a href="{% url 'sales:productinfo_delete' product.pk %}">Sterge</a></td>
+                </tr>
+                {% empty %}
+					<p>Inca nu au fost adaugate produse.</p>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+    
+{% endblock content %}

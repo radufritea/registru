@@ -1,0 +1,28 @@
+{% extends 'sales/base.html' %}
+
+{% block content %}
+<h1>Detalii produs: {{ productinfo }}</h1>
+<table>
+    <tr>
+        <td>Produs</td>
+        <td>{{ productinfo.name }} {{ productinfo.weight }} {{ productinfo.unit }}</td>
+    </tr>
+    <tr>
+        <td>Categorie</td>
+        <td>{{ productinfo.category }}</td>
+    </tr>
+    <tr>
+        <td>Producator (Brand)</td>
+        <td>{{ productinfo.producer }} ({{ productinfo.brand }})</td>
+    </tr>
+    <tr>
+        <td>
+            <a href="{% url 'sales:productinfo_edit' productinfo.pk %}">Editeaza produs</a>
+        </td>
+        <td>
+            <a href="{% url 'sales:productinfo_delete' productinfo.pk %}">Sterge produs</a>
+        </td>
+    </tr>
+</table>
+    
+{% endblock content %}

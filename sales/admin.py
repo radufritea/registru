@@ -1,11 +1,14 @@
 from django.contrib import admin
-from .models import Category, Product, Zone, County, Agent, Channel, Client, Shop, ShopType, Visit, WeekPlan
+from .models import Category, Product, Zone, County, Agent, Channel, Client, Shop, ShopType, Visit, WeekPlan, ProductInfo, Brand, Producer
 
 # Register your models here.
 admin.site.register(Category)
 admin.site.register(Channel)
 admin.site.register(ShopType)
 admin.site.register(Visit)
+admin.site.register(Brand)
+admin.site.register(Producer)
+admin.site.register(ProductInfo)
 
 # REMEMBER: The order and view of Models are in settings.py ADMIN_REORDER
 
