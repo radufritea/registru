@@ -216,6 +216,7 @@ class PriceInfo(models.Model):
 	shop = models.ForeignKey(Shop, blank=True, null=True, on_delete=models.SET_NULL, related_name="priceinfo_shop")
 	date_created = models.DateTimeField(default=timezone.now, blank=True)
 	last_modified = models.DateTimeField(auto_now=True)
+	product = models.ForeignKey("ProductInfo", on_delete=models.CASCADE, related_name='productinfo', default=0)
 	price_value = models.FloatField()
 
 	class Meta:
