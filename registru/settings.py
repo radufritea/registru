@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'registru.wsgi.application'
 
 ADMIN_REORDER = (
     {'app': 'users', 'models': ('users.User', 'users.Location', 'users.Department') },
-    {'app': 'sales', 'models': ('sales.Agent', 'sales.Zone', 'sales.County', 'sales.Channel', 'sales.Client', 'sales.Shop', 'sales.ShopType', 'sales.Product', 'sales.Category', 'sales.Visit', 'sales.WeekPlan')}
+    {'app': 'sales', 'models': ('sales.Agent', 'sales.Zone', 'sales.County', 'sales.Channel', 'sales.Client', 'sales.Shop', 'sales.ShopType', 'sales.Product', 'sales.Category', 'sales.Visit', 'sales.WeekPlan', 'sales.ProductInfo')}
     )
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases

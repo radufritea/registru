@@ -3,9 +3,9 @@ from django.http import HttpResponseRedirect
 from datetime import date, timedelta
 from django.core.paginator import Paginator
 from django.urls import reverse, reverse_lazy
-from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .models import Visit, Agent, WeekPlan, Product, Client, Shop, County, ProductInfo, PriceInfo
+from .models import Visit, Agent, WeekPlan, Product, Client, Shop, County, ProductInfo, PriceEntry
 from .forms import VisitForm, PlanForm
 
 # Set date variables
@@ -193,6 +193,7 @@ def visit(request, visit_id):
 
 
 def select_client(request):
+    source=request.GET.get('source')
     if request.method == "GET":
         agent_clients = []
         clients = Client.objects.all()
@@ -200,7 +201,7 @@ def select_client(request):
         for client in clients:
             if client.zone == agent.zone:
                 agent_clients.append(client.name)
-        context = {'agent_clients': agent_clients}
+        context = {'agent_clients': agent_clients, 'source': source}
     
     elif request.method == "POST":
         client = request.POST.get('client')
@@ -211,13 +212,17 @@ def select_client(request):
 
 
 def select_shop(request, client):
+    source = request.POST.get('source')
     if request.method == "GET":
         client_obj = Client.objects.get(name=client)
         shop_list = client_obj.shop_set.all()
         context = {'shop_list': shop_list, 'client': client}
     elif request.method == "POST":
         shop_id = request.POST.get('shop')
-        return redirect('sales:new_visit', shop_id=shop_id)
+        if source == 'visits':
+            return redirect('sales:new_visit', shop_id=shop_id)
+        else:
+            return redirect('sales:priceinfo', shop_id=shop_id)
 
     return render(request, 'sales/visits/select_shop.html', context)
 
@@ -306,3 +311,23 @@ class ProductInfoDeleteView(DeleteView):
     model = ProductInfo
     template_name = 'sales/productinfo/productinfo_delete.html'
     success_url = reverse_lazy('sales:productinfo_list')
+
+def price_info_collect(request, shop_id):
+    shop = Shop.objects.get(id=shop_id)
+    products = ProductInfo.objects.all().order_by('name')
+    agent = Agent.objects.get(user_id=request.user.id)
+    if request.method == "GET":
+        context = {'shop_id': shop_id, 'client_name': shop.client.name, 'shop_name': shop.name, 'products': products}
+    
+    elif request.method == "POST":
+        price_value = request.POST.get('price_value')
+        product = request.POST.get('product.id')
+        for product in products:
+            price_entry = PriceEntry(price_value=price_value, product=product, agent=agent, client=shop.client, shop=shop)
+            if price_entry.price_value != 0:
+                price_entry.save()
+                
+        context = {'price_entry': price_entry}
+        return HttpResponseRedirect(reverse('sales:competition'))
+
+    return render(request, 'sales/priceinfo/priceinfo.html', context)

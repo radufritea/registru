@@ -210,14 +210,14 @@ class ProductInfo(models.Model):
 		return reverse('sales:productinfo_detail', args=[str(self.id)])
 
 
-class PriceInfo(models.Model):
+class PriceEntry(models.Model):
+	price_value = models.FloatField(null=True)
+	product = models.ForeignKey(ProductInfo, on_delete=models.CASCADE, related_name='productinfo')
 	agent = models.ForeignKey(Agent, blank=True, null=True, on_delete=models.SET_NULL)
 	client = models.ForeignKey(Client, blank=True, null=True, on_delete=models.SET_NULL, related_name="priceinfo_client")
 	shop = models.ForeignKey(Shop, blank=True, null=True, on_delete=models.SET_NULL, related_name="priceinfo_shop")
 	date_created = models.DateTimeField(default=timezone.now, blank=True)
 	last_modified = models.DateTimeField(auto_now=True)
-	product = models.ForeignKey("ProductInfo", on_delete=models.CASCADE, related_name='productinfo', default=0)
-	price_value = models.FloatField()
 
 	class Meta:
 		verbose_name = "inregistrare pret"

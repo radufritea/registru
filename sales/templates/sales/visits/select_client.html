@@ -3,7 +3,7 @@
 {% block content %}
 <main class="container">
     <h1>Selectează clientul</h1>
-    <form action="{% url 'sales:select_client' %}" method="POST" class="form row g-3">
+    <form action="{% url 'sales:select_client' %}?source={{ source }}" method="POST" class="form row g-3">
         {% csrf_token %}
         <select name="client" id="client">
             {% for client in agent_clients %}

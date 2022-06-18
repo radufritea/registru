@@ -22,6 +22,7 @@ urlpatterns = [
 	path('productinfo/new/', ProductInfoCreateView.as_view(), name='productinfo_new'),
 	path('productinfo/<int:pk>/edit/', ProductInfoUpdateView.as_view(), name='productinfo_edit'),
 	path('productinfo/<int:pk>/delete/', ProductInfoDeleteView.as_view(), name='productinfo_delete'),
+	path('priceinfo/<int:shop_id>/', views.price_info_collect, name='priceinfo'),
 ]
 
 if settings.DEBUG:

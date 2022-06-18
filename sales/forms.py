@@ -1,5 +1,6 @@
-from django import forms 
-from .models import Visit, Product, WeekPlan, County
+from django import forms
+from django.forms import modelformset_factory
+from .models import Visit, Product, WeekPlan, PriceEntry
 from datetime import date
 
 class VisitForm(forms.ModelForm):
@@ -67,3 +68,13 @@ class PlanForm(forms.ModelForm):
 			"friday_goal": "Obiective",
 			"friday_achieved": "Realizări",
 		}
+
+class PriceEntryForm(forms.ModelForm):
+
+	class Meta:
+		model = PriceEntry
+		fields = "__all__"
+		exclude = ("date_created", "last-modified",)
+		labels = {"agent": "Nume ASS", "client": "Client", "shop": "Magazin"}
+
+PriceEntryFormSet = modelformset_factory(PriceEntry, fields=('product', 'price_value'))

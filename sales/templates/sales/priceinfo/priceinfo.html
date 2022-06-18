@@ -1,0 +1,36 @@
+{% extends 'sales/base.html' %}
+
+{% block content %}
+<h1>Aduna date despre concurenta</h1>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <table>
+        <thead>
+            <tr>
+                <th>Produs</th>
+                <th>Producator</th>
+                <th>Brand</th>
+                <th>Gama</th>
+                <th>Pret</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.producer }}</td>
+                <td>{{ product.brand }}</td>
+                <td>{{ product.category }}</td>
+                <td><input type="text" name="price_value"></td>
+                <input type="hidden" value="{{ product.id }}">
+            </tr>
+            {% endfor %}
+        </tbody>
+        <input type="submit" value="Salveaza">
+
+    </table>
+</form>
+{% endblock content %}
+
+    
