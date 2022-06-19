@@ -4,13 +4,13 @@
 
 <h1>Concurență</h1>
 
-<a href="{% url 'sales:productinfo_new' %}">Adauga produs nou</a>
-<a href="{% url 'sales:productinfo_list' %}">Lista produse</a>
-<a href="{% url 'sales:select_client' %}?source=priceinfo">Colecteaza info concurenta</a>
+<!-- <a href="{% url 'sales:productinfo_new' %}">Adauga produs nou</a>
+<a href="{% url 'sales:productinfo_list' %}">Lista produse</a> -->
+<a href="{% url 'sales:select_client' %}?source=priceinfo" class="btn btn-primary">Colecteaza info concurenta</a>
 
-<section class="row">
-    <div class="col">
-        <table>
+<section class="container">
+    <div class="row">
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th>Producator</th>

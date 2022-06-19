@@ -30,7 +30,7 @@ def index(request):
 
         pk = request.GET.get('pk')
         
-        week_plans = WeekPlan.objects.all().order_by('-start_date')
+        week_plans = WeekPlan.objects.all().filter(agent=agent).order_by('-start_date')
 
         visits = Visit.objects.all().order_by('-date_created')
         paginator = Paginator(visits, 10)
@@ -45,15 +45,14 @@ def index(request):
                 agent_counties.append(county)
     # The agent/user has no previous plans added, show blank form
         if not week_plans:
-            plan = WeekPlan.objects.create(id=1, start_date=start_date, end_date=end_date, agent=agent, date_created=my_date)
-            # form=PlanForm(initial={'start_date': start_date, 'end_date': end_date})
+            plan = WeekPlan.objects.create(start_date=start_date, end_date=end_date, agent=agent, date_created=my_date)
         else:
     # The plan is selected from homepage dropdown, show plan with specific pk
             if pk != None:
                 plan = WeekPlan.objects.get(id=pk)
     # Automaticlly load the plan where today is within start_date and end_date of the plan
             else:
-                plan = WeekPlan.objects.get(start_date=start_date)	
+                plan = WeekPlan.objects.get(start_date=start_date, agent=agent)	
             
         form = PlanForm(instance=plan)
 
@@ -103,10 +102,7 @@ def index(request):
             wendsday_location = request.POST.get('wendsday_location')
             thursday_location = request.POST.get('thursday_location')
             friday_location = request.POST.get('friday_location')
-            # if this is the first plan of the agent, set plan id to 1
-            # if plan == None:
-            #     new_plan.id = 1
-            # else:
+
             new_plan.id = request.POST.get('plan_id')
             new_plan.save()
             monday_location = str(new_plan.monday_location.id)
@@ -260,6 +256,26 @@ def info_competition(request):
 
     return render(request, 'sales/info_competition.html', context)
 
+def plans_reports(request):
+    agents = Agent.objects.all().order_by('zone').order_by('user')
+    context = {'agents': agents}
+    return render(request, 'sales/weeklyplan_reports/plans_reports.html', context)
+
+def agent_plan_current(request, pk):
+    try:
+        plan = WeekPlan.objects.get(agent=pk, start_date=start_date)  
+    except WeekPlan.DoesNotExist:
+        plan = None
+    except WeekPlan.MultipleObjectsReturned:
+       plan = None
+    
+    context = {'plan': plan}
+    return render(request, 'sales/weeklyplan_reports/agent_plan_current.html', context)
+
+def agent_plan_history(request, pk):
+    plans = WeekPlan.objects.filter(agent=pk).order_by('start_date')
+    context = {'plans': plans}
+    return render(request, 'sales/weeklyplan_reports/agent_plan_history.html', context)
 
 def visits_reports(request):
     agents = Agent.objects.all().order_by("user")

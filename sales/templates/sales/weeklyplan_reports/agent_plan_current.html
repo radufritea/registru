@@ -1,0 +1,63 @@
+{% extends 'sales/base.html' %}
+
+{% block content %}
+
+<section class="container">
+	<div class="row">
+        <h1>Raport saptamanal </h1>
+        <a href="{% url 'sales:plans_reports' %}">Inapoi la rapoarte saptamanale</a>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Zi/Județ</th>
+                    <th scope="col">Obiective</th>
+                    <th scope="col">Realizări</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="day">Luni</div>
+                        <div>Județ {{ plan.monday_location }}</div>
+                    </td>
+                    <td>{{ plan.monday_goal }}</td>
+                    <td>{{ plan.monday_achieved }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="day">Marți</div>
+                        <div>Județ {{ plan.tuesday_location }}</div>
+                    </td>
+                    <td>{{ plan.tuesday_goal }}</td>
+                    <td>{{ plan.tuesday_achieved }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="day">Miercuri</div>
+                        <div>Județ {{ plan.wendsday_location }}</div>
+                    </td>
+                    <td>{{ plan.wendsday_goal }}</td>
+                    <td>{{ plan.wendsday_achieved }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="day">Joi</div>
+                        <div>Județ {{ plan.thursday_location }}</div>
+                    </td>
+                    <td>{{ plan.thursday_goal }}</td>
+                    <td>{{ plan.thursday_achieved }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="day">Vineri</div>
+                        <div>Județ {{ plan.friday_location }}</div>
+                    </td>
+                    <td>{{ plan.friday_goal }}</td>
+                    <td>{{ plan.friday_achieved }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{% endblock %}

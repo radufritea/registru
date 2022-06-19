@@ -15,6 +15,9 @@ urlpatterns = [
 	path('visits/<str:client>/select_shop', views.select_shop, name='select_shop'),
 	path('visits/<int:shop_id>/new_visit', views.new_visit, name='new_visit'),
 	path('info_competition', views.info_competition, name='competition'),
+	path('plans_reports/', views.plans_reports, name='plans_reports'),
+	path('plans_reports/current/<int:pk>/', views.agent_plan_current, name='agent_plan_current'),
+	path('plans_reports/history/<int:pk>/', views.agent_plan_history, name='agent_plan_history'),
 	path('visits_reports', views.visits_reports, name='visits_reports'),
 	path('competition_reports', views.competition_reports, name='competition_reports'),
 	path('productinfo_list', ProductInfoListView.as_view(), name='productinfo_list'),
@@ -23,6 +26,7 @@ urlpatterns = [
 	path('productinfo/<int:pk>/edit/', ProductInfoUpdateView.as_view(), name='productinfo_edit'),
 	path('productinfo/<int:pk>/delete/', ProductInfoDeleteView.as_view(), name='productinfo_delete'),
 	path('priceinfo/<int:shop_id>/', views.price_info_collect, name='priceinfo'),
+
 ]
 
 if settings.DEBUG:
