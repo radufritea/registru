@@ -211,7 +211,7 @@ class ProductInfo(models.Model):
 
 
 class PriceEntry(models.Model):
-	price_value = models.FloatField(null=True)
+	price_value = models.FloatField(null=True, default=0)
 	product = models.ForeignKey(ProductInfo, on_delete=models.CASCADE, related_name='productinfo')
 	agent = models.ForeignKey(Agent, blank=True, null=True, on_delete=models.SET_NULL)
 	client = models.ForeignKey(Client, blank=True, null=True, on_delete=models.SET_NULL, related_name="priceinfo_client")

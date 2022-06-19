@@ -255,7 +255,10 @@ def new_visit(request, shop_id):
 
 
 def info_competition(request):
-    return render(request, 'sales/info_competition.html')
+    data = PriceEntry.objects.exclude(price_value=None)
+    context = {'data': data}
+
+    return render(request, 'sales/info_competition.html', context)
 
 
 def visits_reports(request):
@@ -312,21 +315,23 @@ class ProductInfoDeleteView(DeleteView):
     template_name = 'sales/productinfo/productinfo_delete.html'
     success_url = reverse_lazy('sales:productinfo_list')
 
+
 def price_info_collect(request, shop_id):
     shop = Shop.objects.get(id=shop_id)
     products = ProductInfo.objects.all().order_by('name')
     agent = Agent.objects.get(user_id=request.user.id)
     if request.method == "GET":
         context = {'shop_id': shop_id, 'client_name': shop.client.name, 'shop_name': shop.name, 'products': products}
-    
     elif request.method == "POST":
-        price_value = request.POST.get('price_value')
-        product = request.POST.get('product.id')
+        price_str = request.POST.getlist('price_value')
+        price_map = map(int, price_str)
+        price_values = list(price_map)
+        x=0
         for product in products:
-            price_entry = PriceEntry(price_value=price_value, product=product, agent=agent, client=shop.client, shop=shop)
+            price_entry = PriceEntry(price_value=price_values[x],product=product,agent=agent,client=shop.client,shop=shop)
+            x=x+1
             if price_entry.price_value != 0:
                 price_entry.save()
-                
         context = {'price_entry': price_entry}
         return HttpResponseRedirect(reverse('sales:competition'))
 

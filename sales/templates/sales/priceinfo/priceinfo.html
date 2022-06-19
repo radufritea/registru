@@ -3,7 +3,7 @@
 {% block content %}
 <h1>Aduna date despre concurenta</h1>
 
-<form action="" method="POST">
+<form action="{% url 'sales:priceinfo' shop_id %}" method="POST">
     {% csrf_token %}
     <table>
         <thead>
@@ -22,8 +22,7 @@
                 <td>{{ product.producer }}</td>
                 <td>{{ product.brand }}</td>
                 <td>{{ product.category }}</td>
-                <td><input type="text" name="price_value"></td>
-                <input type="hidden" value="{{ product.id }}">
+                <td><input type="number" id="{{ product.id }}" name="price_value" value="0"></td>
             </tr>
             {% endfor %}
         </tbody>

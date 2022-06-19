@@ -8,4 +8,42 @@
 <a href="{% url 'sales:productinfo_list' %}">Lista produse</a>
 <a href="{% url 'sales:select_client' %}?source=priceinfo">Colecteaza info concurenta</a>
 
+<section class="row">
+    <div class="col">
+        <table>
+            <thead>
+                <tr>
+                    <th>Producator</th>
+                    <th>Brand</th>
+                    <th>Produs</th>
+                    <th>Pret</th>
+                    <th>Data</th>
+                    <th>Clientul</th>
+                    <th>Magazinul</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for line in data%}
+                <tr>
+                    <td>{{ line.product.producer }}</td>
+                    <td>{{ line.product.brand }}</td>
+                    <td>{{ line.product.name }}</td>
+                    <td>{{ line.price_value }}</td>
+                    <td>{{ line.date_created }}</td>
+                    <td>{{ line.client }}</td>
+                    <td>{{ line.shop }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
 {% endblock content %}
+
+price_value = models.FloatField(null=True)
+	product = models.ForeignKey(ProductInfo, on_delete=models.CASCADE, related_name='productinfo')
+	agent = models.ForeignKey(Agent, blank=True, null=True, on_delete=models.SET_NULL)
+	client = models.ForeignKey(Client, blank=True, null=True, on_delete=models.SET_NULL, related_name="priceinfo_client")
+	shop = models.ForeignKey(Shop, blank=True, null=True, on_delete=models.SET_NULL, related_name="priceinfo_shop")
+	date_created = models.DateTimeField(default=timezone.now, blank=True)
+	last_modified = m
