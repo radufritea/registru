@@ -253,56 +253,10 @@ def new_visit(request, shop_id):
 def info_competition(request):
     data = PriceEntry.objects.exclude(price_value=None)
     context = {'data': data}
-
     return render(request, 'sales/info_competition.html', context)
-
-def plans_reports(request):
-    agents = Agent.objects.all().order_by('zone').order_by('user')
-    context = {'agents': agents}
-    return render(request, 'sales/weeklyplan_reports/plans_reports.html', context)
-
-def agent_plan_current(request, pk):
-    try:
-        plan = WeekPlan.objects.get(agent=pk, start_date=start_date)  
-    except WeekPlan.DoesNotExist:
-        plan = None
-    except WeekPlan.MultipleObjectsReturned:
-       plan = None
-    
-    context = {'plan': plan}
-    return render(request, 'sales/weeklyplan_reports/agent_plan_current.html', context)
-
-def agent_plan_history(request, pk):
-    plans = WeekPlan.objects.filter(agent=pk).order_by('start_date')
-    context = {'plans': plans}
-    return render(request, 'sales/weeklyplan_reports/agent_plan_history.html', context)
-
-def visits_reports(request):
-    agents = Agent.objects.all().order_by("user")
-    q = request.GET.get('q')
-    if q != None:
-        selected_agent = Agent.objects.get(id=q)
-    else:
-        selected_agent = None
-
-    if selected_agent == None:
-        visits = Visit.objects.all().order_by("-date_created")
-    else:
-        visits = Visit.objects.filter(agent=selected_agent)
-
-    return render(request, 'sales/visits_reports.html', {
-        'agents': agents,
-        'visits': visits,
-        'agent': selected_agent,
-    })
-
-
-def competition_reports(request):
-    return render(request, 'sales/competition_reports.html')
 
 
 ### Info on competition section with generic views
-
 class ProductInfoCreateView(CreateView):
     model = ProductInfo
     template_name = 'sales/productinfo/productinfo_new.html'
@@ -331,7 +285,7 @@ class ProductInfoDeleteView(DeleteView):
     template_name = 'sales/productinfo/productinfo_delete.html'
     success_url = reverse_lazy('sales:productinfo_list')
 
-
+# Add information about competition prices
 def price_info_collect(request, shop_id):
     shop = Shop.objects.get(id=shop_id)
     products = ProductInfo.objects.all().order_by('name')
@@ -352,3 +306,85 @@ def price_info_collect(request, shop_id):
         return HttpResponseRedirect(reverse('sales:competition'))
 
     return render(request, 'sales/priceinfo/priceinfo.html', context)
+
+
+# Weekly Plans reports (select between current week and historical data)
+def plans_reports(request):
+    agents = Agent.objects.all().order_by('zone').order_by('user')
+    context = {'agents': agents}
+    return render(request, 'sales/weeklyplan_reports/plans_reports.html', context)
+
+
+def agent_plan_current(request, pk):
+    try:
+        plan = WeekPlan.objects.get(agent=pk, start_date=start_date)  
+    except WeekPlan.DoesNotExist:
+        plan = None
+    except WeekPlan.MultipleObjectsReturned:
+       plan = None
+    
+    context = {'plan': plan}
+    return render(request, 'sales/weeklyplan_reports/agent_plan_current.html', context)
+
+def agent_plan_history(request, pk):
+    plans = WeekPlan.objects.filter(agent=pk).order_by('start_date')
+    context = {'plans': plans}
+    return render(request, 'sales/weeklyplan_reports/agent_plan_history.html', context)
+
+
+# Reports on competition pricing
+def competition_reports(request):
+    return render(request, 'sales/competition_reports.html')
+
+# Storechecks (visits) reports
+def visits_reports(request):
+    agents = Agent.objects.all().order_by("user")
+    clients = Client.objects.all().order_by("name")
+    shops = Shop.objects.all().order_by("name")
+    products = Product.objects.all().order_by("name")
+    context = {'agents': agents, 'clients': clients, 'shops': shops, 'products': products}
+    return render(request, 'sales/storecheck_reports/visits_reports.html', context)
+
+def visits_by_agent_and_client(request):
+    agent = request.GET.get('a')
+    client = request.GET.get('c')
+    shop = request.GET.get('s')
+
+    if agent and client and shop:
+        visits = Visit.objects.filter(agent=agent, client=client, shop=shop)
+        selected_agent = Agent.objects.get(pk=agent)
+    elif agent and client and not shop:
+        visits = Visit.objects.filter(agent=agent, client=client)
+        selected_agent = Agent.objects.get(pk=agent)
+    elif agent and shop and not client:
+        visits = Visit.objects.filter(agent=agent, shop=shop)
+        selected_agent = Agent.objects.get(pk=agent)
+    elif client and shop and not agent:
+        visits = Visit.objects.filter(client=client, shop=shop)
+        selected_agent = "toti agentii"
+    elif agent and not client and not shop:
+        visits = Visit.objects.filter(agent=agent)
+        selected_agent = Agent.objects.get(pk=agent)
+    elif client and not agent and not shop:
+       visits = Visit.objects.filter(client=client)
+       selected_agent = "toti agentii"
+    elif shop and not agent and not client:
+       visits = Visit.objects.filter(shop=shop)
+       selected_agent = "toti agentii"
+    else:
+        visits = Visit.objects.all().order_by("-date_created")
+        selected_agent = "toti agentii"
+
+    context = {'visits': visits, 'agent': selected_agent}
+    return render(request, 'sales/storecheck_reports/by_agent_and_client.html', context)
+
+def visits_by_product(request):
+    product = Product.objects.get(id=request.GET.get('p'))
+    visits = Visit.objects.all()
+    locations = []
+    for visit in visits:
+        items = visit.products.all()
+        if product in items:
+            locations.append(visit)
+    context = {'locations': locations}
+    return render(request, 'sales/storecheck_reports/by_product.html', context)

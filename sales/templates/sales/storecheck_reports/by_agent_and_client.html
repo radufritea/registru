@@ -1,0 +1,38 @@
+{% extends 'sales/base.html' %}
+
+{% block content %}
+
+<section class="container">
+    <div class="row">
+        {% if agent %}
+            <h6>Afisez rezultate pentru: {{ agent }}</h6>
+        {% else %}
+            <h6>Toate vizitele</h6>
+        {% endif %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Agent</th>
+                    <th>Data</th>
+                    <th>Client</th>
+                    <th>Magazin</th>
+                    <th>Detalii</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for visit in visits %}
+                <tr>
+                    <td>{{ visit.agent }}</td>
+                    <td>{{ visit.date_created}}</td>
+                    <td>{{ visit.client }}</td>
+                    <td> {{ visit.shop }}</td>
+                    <td><a href="">Detalii</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+</main>
+
+{% endblock %}

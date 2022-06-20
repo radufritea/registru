@@ -1,0 +1,72 @@
+{% extends 'sales/base.html' %}
+
+{% block content %}
+<main class="container">
+    <section class="row">
+        <div class="col">
+            <h1>Rapoarte Storechecks</h1>
+        </div>
+    </section>
+    <section class="row">
+       <!-- ### BY AGENT/CLIENT (First type of search) ### -->
+        <div class="col">
+            <h3>Caută vizitele după agent și/sau client</h3>
+            <p>Aceasta cautare iti arata o lista de vizite realizate de un agent, ordonate invers cronologic.</p>
+            <form action="{% url 'sales:by_agent_and_client' %}" class="form" method="get">
+                <label for="agents">Alege ASS:</label>
+                <select name="a" id="agents">
+                    <option disabled selected value> -- toți ASSii -- </option>
+                    {% for agent in agents %}
+                    <option value="{{ agent.id }}">{{ agent.user }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="clients">Alege client:</label>
+                <select name="c" id="clients">
+                    <option disabled selected value> -- toți clientii -- </option>
+                    {% for client in clients %}
+                    <option value="{{ client.id }}">{{ client }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="shops">Alege magazin:</label>
+                <select name="s" id="shops">
+                    <option disabled selected value> -- toate magazinele -- </option>
+                    {% for shop in shops %}
+                    <option value="{{ shop.id }}">{{ shop }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Caută" class="btn btn-primary">
+            </form>
+        </div>
+
+        <!-- ### BY PRODUCT (Second type of search) ### -->
+        <div class="col">
+            <h3>Cauta dupa produs</h3>
+            <p>Aceasta cautare iti va afisa o lista de magazine in care produsul a fost prezent la cel putin o vizita realizata in intervalul selectat de tine.</p>
+            <form action="{% url 'sales:by_product' %}" class="form" method="get">
+                <label for="products">Alege produs:</label>
+                <select name="p" id="products">
+                    <option disabled selected value> -- toate produsele -- </option>
+                    {% for product in products %}
+                    <option value="{{ product.id}}">{{ product }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Caută" class="btn btn-primary">
+            </form>
+        </div>
+        <div class="col">
+            <h3>Urmareste evolutia prezentei la raft</h3>
+            <p>Genereaza un raport cu numarul de produse prezente la raft la fiecare vizita realizata in acelasi magazin</p>
+            <input type="submit" value="Genereaza raport" class="btn btn-primary">
+        </div>
+    </section>
+    <section class="row">
+        <div class="col">
+            
+        </div>
+    </section>
+</main>
+
+
+{% endblock content %}

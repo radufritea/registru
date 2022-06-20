@@ -1,0 +1,30 @@
+{% extends 'sales/base.html' %}
+
+{% block content %}
+<section class="container">
+    <div class="row">
+        <table clas="table table-hover">
+            <thead>
+                <tr>
+                    <th>Agent</th>
+                    <th>Data</th>
+                    <th>Client</th>
+                    <th>Magazin</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for visit in locations %}
+                <tr>
+                    <td>{{ visit.agent }}</td>
+                    <td>{{ visit.date_created|date:"d M Y"}}</td>
+                    <td>{{ visit.client }}</td>
+                    <td> {{ visit.shop }}</td>
+                    <td> <a href="">Detalii</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
