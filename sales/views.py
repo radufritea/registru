@@ -201,18 +201,18 @@ def select_client(request):
     
     elif request.method == "POST":
         client = request.POST.get('client')
-        context = {'client': client}
-        return redirect('sales:select_shop', client=client)
+        source = request.POST.get('source')
+        context = {'client': client, 'source': source}
+        return redirect('sales:select_shop', client, source)
     
     return render(request, 'sales/visits/select_client.html', context)
 
 
-def select_shop(request, client):
-    source = request.POST.get('source')
+def select_shop(request, client, source):
     if request.method == "GET":
         client_obj = Client.objects.get(name=client)
         shop_list = client_obj.shop_set.all()
-        context = {'shop_list': shop_list, 'client': client}
+        context = {'shop_list': shop_list, 'client': client, 'source': source}
     elif request.method == "POST":
         shop_id = request.POST.get('shop')
         if source == 'visits':
