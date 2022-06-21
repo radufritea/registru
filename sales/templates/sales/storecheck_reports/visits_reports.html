@@ -55,16 +55,14 @@
                 <input type="submit" value="Caută" class="btn btn-primary">
             </form>
         </div>
+
+        <!-- ### EXPORTA DATELE -->
         <div class="col">
-            <h3>Urmareste evolutia prezentei la raft</h3>
-            <p>Genereaza un raport cu numarul de produse prezente la raft la fiecare vizita realizata in acelasi magazin</p>
-            <input type="submit" value="Genereaza raport" class="btn btn-primary">
+            <h3>Exporta datele</h3>
+            <p>Genereaza un fisier csv care contine toate vizitele realizate pana in prezent de toti agentii. Fisierul csv poate fi deschis cu usurinta in Microsoft Excel.</p>
+            <a href="{% url 'sales:export_storechecks' %}" class="btn btn-primary">Exporta in Excel</a>
         </div>
-    </section>
-    <section class="row">
-        <div class="col">
-            
-        </div>
+
     </section>
 </main>
 

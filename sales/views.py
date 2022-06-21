@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from datetime import date, timedelta
 from django.core.paginator import Paginator
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+import csv
 
 from .models import Visit, Agent, WeekPlan, Product, Client, Shop, County, ProductInfo, PriceEntry
 from .forms import VisitForm, PlanForm
@@ -388,3 +389,51 @@ def visits_by_product(request):
             locations.append(visit)
     context = {'locations': locations}
     return render(request, 'sales/storecheck_reports/by_product.html', context)
+
+# def export_storechecks(request):
+#     visits = Visit.objects.all()
+#     response = HttpResponse('text/csv')
+#     response['Content-Disposition'] = 'attachment; filename=storechecks_export.csv'
+#     writer = csv.writer(response)
+#     writer.writerow(['Agent', 'Client', 'Magazin', 'Data crearii', 'Data ultimei modificari', 'Baxuri comandate', 'Observatii'])
+#     visit_fields = visits.values_list('agent', 'client', 'shop', 'date_created', 'last_modified', 'quantity_ordered', 'observations')
+#     for visit in visit_fields:
+#         writer.writerow(visit)
+#     return response
+
+def export_storechecks(request):
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="storechecks_report.csv"'
+
+    writer = csv.writer(response)
+    
+
+    # Get database information
+    items = Visit.objects.all()
+
+    # Define and write csv header
+    products = Product.objects.all().order_by('name')
+    product_list = products.values_list('name', flat=True)
+    header = ['Client']
+    for product in product_list:
+        header.append(product)
+    writer.writerow(header)
+
+    # Define each row
+    for visit in items:
+        row = []
+
+        # Add a client name
+        row.append(visit.client)
+
+        # Add an X for each product that was on the shelf at that visit
+        visit_products = visit.products.values_list('name', flat=True)
+        for product in product_list:
+            if product in visit_products:
+                row.append('X')
+            else:
+                row.append('')
+        writer.writerow(row)
+
+    return response
