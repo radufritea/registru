@@ -8,7 +8,7 @@
         </div>
     </section>
     <section class="row">
-       <!-- ### BY AGENT/CLIENT (First type of search) ### -->
+        <!-- ### BY AGENT/CLIENT (First type of search) ### -->
         <div class="col">
             <h3>Caută vizitele după agent și/sau client</h3>
             <p>Aceasta cautare iti arata o lista de vizite realizate de un agent, ordonate invers cronologic.</p>
@@ -43,7 +43,8 @@
         <!-- ### BY PRODUCT (Second type of search) ### -->
         <div class="col">
             <h3>Cauta dupa produs</h3>
-            <p>Aceasta cautare iti va afisa o lista de magazine in care produsul a fost prezent la cel putin o vizita realizata in intervalul selectat de tine.</p>
+            <p>Aceasta cautare iti va afisa o lista de magazine in care produsul a fost prezent la cel putin o vizita
+                realizata in intervalul selectat de tine.</p>
             <form action="{% url 'sales:by_product' %}" class="form" method="get">
                 <label for="products">Alege produs:</label>
                 <select name="p" id="products">
@@ -59,7 +60,8 @@
         <!-- ### EXPORTA DATELE -->
         <div class="col">
             <h3>Exporta datele</h3>
-            <p>Genereaza un fisier csv care contine toate vizitele realizate pana in prezent de toti agentii. Fisierul csv poate fi deschis cu usurinta in Microsoft Excel.</p>
+            <p>Genereaza un fisier csv care contine toate vizitele realizate pana in prezent de toti agentii. Fisierul
+                csv poate fi deschis cu usurinta in Microsoft Excel.</p>
             <a href="{% url 'sales:export_storechecks' %}" class="btn btn-primary">Exporta in Excel</a>
         </div>
 
