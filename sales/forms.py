@@ -32,9 +32,7 @@ class VisitForm(forms.ModelForm):
 
     shelf_image = forms.ImageField(required=False)
 
-    observations = forms.CharField(
-        widget=forms.Textarea(attrs={"rows": "5", "cols": "50"})
-    )
+    observations = forms.CharField(widget=forms.Textarea(attrs={"rows": "5", "cols": "50"}))
 
     class Meta:
         model = Visit

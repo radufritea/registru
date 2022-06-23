@@ -57,12 +57,8 @@ class User(AbstractUser):
     phone = models.CharField(blank=True, max_length=30)
     hire_date = models.DateField(blank=True, null=True)
     position = models.CharField(max_length=150, blank=True)
-    department = models.ForeignKey(
-        Department, blank=True, null=True, on_delete=models.SET_NULL
-    )
-    location = models.ForeignKey(
-        Location, blank=True, null=True, on_delete=models.SET_NULL
-    )
+    department = models.ForeignKey(Department, blank=True, null=True, on_delete=models.SET_NULL)
+    location = models.ForeignKey(Location, blank=True, null=True, on_delete=models.SET_NULL)
     birthday = models.DateField(blank=True, null=True)
 
     USERNAME_FIELD = "email"

@@ -22,82 +22,96 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('DJANGO_SECRET_KEY')
+SECRET_KEY = config("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', cast=bool)
+DEBUG = config("DEBUG", cast=bool)
 
-ALLOWED_HOSTS = ['dev.arovit.ro', '89.34.72.126', '127.0.0.1', '192.168.10.193']
+ALLOWED_HOSTS = ["dev.arovit.ro", "89.34.72.126", "127.0.0.1", "192.168.10.193"]
 
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = "users.User"
 
 # Application definition
 
 INSTALLED_APPS = [
     # My apps
-    'users',
-    'sales',
-
+    "users",
+    "sales",
     # Third-party apps
-    'admin_reorder',
-    'decouple',
-    
+    "admin_reorder",
+    "decouple",
     # Default Django apps
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'admin_reorder.middleware.ModelAdminReorder',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "admin_reorder.middleware.ModelAdminReorder",
 ]
 
-ROOT_URLCONF = 'registru.urls'
+ROOT_URLCONF = "registru.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'registru.wsgi.application'
+WSGI_APPLICATION = "registru.wsgi.application"
 
 ADMIN_REORDER = (
-    {'app': 'users', 'models': ('users.User', 'users.Location', 'users.Department') },
-    {'app': 'sales', 'models': ('sales.Agent', 'sales.Zone', 'sales.County', 'sales.Channel', 'sales.Client', 'sales.Shop', 'sales.ShopType', 'sales.Product', 'sales.Category', 'sales.Visit', 'sales.WeekPlan', 'sales.ProductInfo')}
-    )
+    {"app": "users", "models": ("users.User", "users.Location", "users.Department")},
+    {
+        "app": "sales",
+        "models": (
+            "sales.Agent",
+            "sales.Zone",
+            "sales.County",
+            "sales.Channel",
+            "sales.Client",
+            "sales.Shop",
+            "sales.ShopType",
+            "sales.Product",
+            "sales.Category",
+            "sales.Visit",
+            "sales.WeekPlan",
+            "sales.ProductInfo",
+        ),
+    },
+)
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASS'),
-        'HOST': 'localhost',
-        'PORT': '',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": config("DB_NAME"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASS"),
+        "HOST": "localhost",
+        "PORT": "",
     }
 }
 
@@ -106,16 +120,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -123,9 +137,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'Europe/Bucharest'
+TIME_ZONE = "Europe/Bucharest"
 
 USE_I18N = True
 
@@ -139,15 +153,15 @@ USE_TZ = False
 STATIC_ROOT = BASE_DIR / "static"
 STATIC_URL = "static/"
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CSRF_TRUSTED_ORIGINS = ['https://*.arovit.ro','https://*.127.0.0.1']
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+CSRF_TRUSTED_ORIGINS = ["https://*.arovit.ro", "https://*.127.0.0.1"]
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 USE_X_FORWARDED_HOST = True
 USE_X_FORWARDED_PORT = True

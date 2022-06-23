@@ -86,9 +86,7 @@ class Channel(models.Model):
 
 class Client(models.Model):
     name = models.CharField("Numele", max_length=254)
-    loc_name = models.CharField(
-        "Numele locatiei", max_length=254, null=True, blank=True
-    )
+    loc_name = models.CharField("Numele locatiei", max_length=254, null=True, blank=True)
     CUI = models.IntegerField("CUI", blank=True, null=True)
     channel = models.ForeignKey(
         Channel,
@@ -106,9 +104,7 @@ class Client(models.Model):
     city = models.CharField("Localitatea", max_length=50, blank=True)
     county = models.ForeignKey(County, blank=True, null=True, on_delete=models.SET_NULL)
     contact_person = models.CharField("Persoana de contact", max_length=254, blank=True)
-    contact_position = models.CharField(
-        "Functia", max_length=254, blank=True, null=True
-    )
+    contact_position = models.CharField("Functia", max_length=254, blank=True, null=True)
     phone = models.CharField("Telefon", max_length=10, blank=True)
     email = models.EmailField("Email", max_length=100, blank=True)
 
@@ -135,9 +131,7 @@ class ShopType(models.Model):
 class Shop(models.Model):
     name = models.CharField("Numele", max_length=254)
     client = models.ForeignKey(Client, blank=True, null=True, on_delete=models.CASCADE)
-    shop_type = models.ForeignKey(
-        ShopType, blank=True, null=True, on_delete=models.SET_NULL
-    )
+    shop_type = models.ForeignKey(ShopType, blank=True, null=True, on_delete=models.SET_NULL)
     address = models.CharField("Adresa", max_length=254, blank=True)
     city = models.CharField("Localitatea", max_length=50, blank=True)
     county = models.ForeignKey(County, blank=True, null=True, on_delete=models.SET_NULL)
@@ -259,9 +253,7 @@ class ProductInfo(models.Model):
     )
     packing = models.CharField("Ambalaj", max_length=25, blank=True)
     brand = models.ForeignKey("Brand", on_delete=models.CASCADE, verbose_name="brand")
-    producer = models.ForeignKey(
-        "Producer", on_delete=models.CASCADE, verbose_name="producator"
-    )
+    producer = models.ForeignKey("Producer", on_delete=models.CASCADE, verbose_name="producator")
 
     class Meta:
         verbose_name = "produs concurenta"
@@ -277,9 +269,7 @@ class ProductInfo(models.Model):
 
 class PriceEntry(models.Model):
     price_value = models.FloatField(null=True, default=0)
-    product = models.ForeignKey(
-        ProductInfo, on_delete=models.CASCADE, related_name="productinfo"
-    )
+    product = models.ForeignKey(ProductInfo, on_delete=models.CASCADE, related_name="productinfo")
     agent = models.ForeignKey(Agent, blank=True, null=True, on_delete=models.SET_NULL)
     client = models.ForeignKey(
         Client,

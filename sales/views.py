@@ -113,9 +113,7 @@ def index(request):
 
     # Save changes to currently showed plan
     elif request.method == "POST":
-        form = PlanForm(
-            request.POST, initial={"start_date": start_date, "end_date": end_date}
-        )
+        form = PlanForm(request.POST, initial={"start_date": start_date, "end_date": end_date})
         if form.is_valid():
             new_plan = form.save(commit=False)
             agent = Agent.objects.get(user_id=request.user.id)
