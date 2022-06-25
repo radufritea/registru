@@ -49,6 +49,11 @@ urlpatterns = [
         name="export_storechecks",
     ),
     path("competition_reports", views.competition_reports, name="competition_reports"),
+    path(
+        "competition_reports/export_competition/",
+        views.export_competition,
+        name="export_competition",
+    ),
     path("productinfo_list", ProductInfoListView.as_view(), name="productinfo_list"),
     path(
         "productinfo/<int:pk>/",

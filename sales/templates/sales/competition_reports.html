@@ -2,6 +2,18 @@
 
 {% block content %}
 
-<h1>Rapoarte despre concurență</h1>
+<main class="container">
+    <section class="row">
+        <div class="col">
+            <h1>Rapoarte despre concurență</h1>
+        </div>
+    </section>
+    <!-- ### EXPORTA DATELE -->
+    <div class="col">
+        <h3>Exporta datele</h3>
+        <p>Genereaza un fisier csv care contine toate informatiile despre preturile concurentei colectate pana in
+            prezent de toti agentii. Fisierul csv poate fi deschis cu usurinta in Microsoft Excel.</p>
+        <a href="{% url 'sales:export_competition' %}" class="btn btn-primary">Exporta in Excel</a>
+    </div>
 
-{% endblock content %}
+    {% endblock content %}

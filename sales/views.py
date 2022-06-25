@@ -403,6 +403,48 @@ def competition_reports(request):
     return render(request, "sales/competition_reports.html")
 
 
+def export_competition(request):
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = 'attachment; filename="competition_report.csv"'
+
+    writer = csv.writer(response)
+
+    # Define and write csv header
+    header = [
+        "Magazin",
+        "Producător",
+        "Brand",
+        "Produs",
+        "Gramaj",
+        "Pret",
+        "Data",
+        "Gama",
+        "Agent",
+    ]
+    writer.writerow(header)
+
+    # Get database information
+    items = PriceEntry.objects.all()
+
+    # # Define each row
+    for item in items:
+        row = [
+            item.shop,
+            item.product.producer,
+            item.product.brand,
+            item.product.name,
+            item.product.weight,
+            item.price_value,
+            item.date_created,
+            item.product.category,
+            item.agent,
+        ]
+        writer.writerow(row)
+
+    return response
+
+
 # Storechecks (visits) reports
 def visits_reports(request):
     agents = Agent.objects.all().order_by("user")
