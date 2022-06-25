@@ -152,7 +152,7 @@ class Visit(models.Model):
     shop = models.ForeignKey(
         Shop, blank=True, null=True, on_delete=models.SET_NULL, related_name="shop"
     )
-    date_created = models.DateTimeField(default=timezone.now, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True, blank=True)
     last_modified = models.DateTimeField(auto_now=True)
     products = models.ManyToManyField(Product, related_name="products")
     products_ordered = models.ManyToManyField(Product, related_name="products_ordered")
