@@ -5,17 +5,19 @@
 <section class="container">
     <div class="row">
         {% if agent %}
-            <h6>Afisez rezultate pentru: {{ agent }}</h6>
+        <h6>Afisez rezultate pentru: {{ agent }}</h6>
         {% else %}
-            <h6>Toate vizitele</h6>
+        <h6>Toate vizitele</h6>
         {% endif %}
         <table class="table table-hover">
             <thead>
                 <tr>
                     <th>Agent</th>
-                    <th>Data</th>
                     <th>Client</th>
                     <th>Magazin</th>
+                    <th>Data</th>
+                    <th>Produse la raft</th>
+                    <th>Produse comandate</th>
                     <th>Detalii</th>
                 </tr>
             </thead>
@@ -23,10 +25,12 @@
                 {% for visit in visits %}
                 <tr>
                     <td>{{ visit.agent }}</td>
-                    <td>{{ visit.date_created}}</td>
                     <td>{{ visit.client }}</td>
-                    <td> {{ visit.shop }}</td>
-                    <td><a href="">Detalii</a></td>
+                    <td>{{ visit.shop }}</td>
+                    <td>{{ visit.date_created}}</td>
+                    <td>{{ visit.products.count }}</td>
+                    <td>{{ visit.products_ordered.count }}</td>
+                    <td><a href="{% url 'sales:visit' visit.id %}">Detalii</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

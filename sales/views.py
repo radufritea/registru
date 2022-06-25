@@ -477,7 +477,15 @@ def export_storechecks(request):
     # Define and write csv header
     products = Product.objects.all().order_by("name")
     product_list = products.values_list("name", flat=True)
-    header = ["Client", "Magazin", "Data", "Produse prezente", "Produse comandate", "Baxuri"]
+    header = [
+        "Agent",
+        "Client",
+        "Magazin",
+        "Data",
+        "Produse prezente",
+        "Produse comandate",
+        "Baxuri",
+    ]
     for product in product_list:
         header.append(f"R_{product}")
     for product in product_list:
@@ -490,7 +498,7 @@ def export_storechecks(request):
         row = []
 
         # Add a client, shop, date
-        row.extend([visit.client, visit.shop, visit.date_created])
+        row.extend([visit.agent, visit.client, visit.shop, visit.date_created])
 
         # Add an X for each product that was on the shelf at that visit
         visit_products = visit.products.values_list("name", flat=True)

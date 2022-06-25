@@ -16,43 +16,53 @@
 					aria-label="Date">
 			</div>
 		</div>
-		<section class="row">
-			<div class="col mb-3">
-				<h5>Produse prezente la raft:</h5>
-				<ul class="list-group list-group-flush">
-					{% for product in products %}
-					<li class="list-group-item">{{ product.name }}</li>
-					{% empty %}
-					<p>Nu a fost înregistrat nici un produs prezent la raft.</p>
-					{% endfor %}
-				</ul>
-			</div>
-			<div class="col mb-3">
-				<h5>Produse comandate:</h5>
-				<ul class="list-group list-group-flush">
-					{% for product in products_ordered %}
-					<li class="list-group-item">{{ product.name }}</li>
-					{% empty %}
-					<p>Nu a fost înregistrat nici un produs comandat.</p>
-					{% endfor %}
-				</ul>
-			</div>
-			<div class="col mb-3">
-				<h5>Imagini:</h5>
-				{% if visit.shelf_image %}
-				<img src="{{ visit.shelf_image.url }}" alt="Product image" width="250" height="250">
-				{% else %}
-				<p>Nu există imagini de la această vizită.</p>
-				{% endif %}
-			</div>
-		</section>
-		<section class="row d-flex justify-content-center mb-3">
-			<div class="col-6 d-flex justify-content-center">
-				<a class="btn btn-primary" href="{% url 'sales:visits' %}">Listă vizite</a>
-			</div>
-		</section>
-
-
+	</section>
+	<section class="row">
+		<div class="col mb-3">
+			<h5>Produse prezente la raft:</h5>
+			<ul class="list-group list-group-flush">
+				{% for product in products %}
+				<li class="list-group-item">{{ product.name }}</li>
+				{% empty %}
+				<p>Nu a fost înregistrat nici un produs prezent la raft.</p>
+				{% endfor %}
+			</ul>
+		</div>
+		<div class="col mb-3">
+			<h5>Produse comandate:</h5>
+			<ul class="list-group list-group-flush">
+				{% for product in products_ordered %}
+				<li class="list-group-item">{{ product.name }}</li>
+				{% empty %}
+				<p>Nu a fost înregistrat nici un produs comandat.</p>
+				{% endfor %}
+			</ul>
+		</div>
+	</section>
+	<section class="row">
+		<div class="col mb-3">
+			<h5>Baxuri comandate</h5>
+			<p>{{ visit.quantity_ordered }}</p>
+		</div>
+		<div class="col mb-3">
+			<h5>Imagini:</h5>
+			{% if visit.shelf_image %}
+			<img src="{{ visit.shelf_image.url }}" alt="Product image" width="250" height="250">
+			{% else %}
+			<p>Nu există imagini de la această vizită.</p>
+			{% endif %}
+		</div>
+	</section>
+	<section class="row">
+		<div class="col mb-3">
+			<h5>Comentarii:</h5>
+			<p>{{ visit.observations }}</p>
+		</div>
+	</section>
+	<section class="row d-flex justify-content-center mb-3">
+		<div class="col-6 d-flex justify-content-center">
+			<a class="btn btn-primary" href="{% url 'sales:visits' %}">Înapoi la lista de vizite</a>
+		</div>
 	</section>
 </main>
 
