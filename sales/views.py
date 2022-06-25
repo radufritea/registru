@@ -209,7 +209,12 @@ def visits(request):
 def visit(request, visit_id):
     visit = Visit.objects.get(id=visit_id)
     products = visit.products.all()
-    return render(request, "sales/visit.html", {"visit": visit, "products": products})
+    products_ordered = visit.products_ordered.all()
+    return render(
+        request,
+        "sales/visit.html",
+        {"visit": visit, "products": products, "products_ordered": products_ordered},
+    )
 
 
 def select_client(request):
@@ -265,17 +270,26 @@ def new_visit(request, shop_id):
             client = shop.client
             date_created = form.cleaned_data.get("date_created")
             shelf_image = form.cleaned_data.get("shelf_image")
+            quantity_ordered = form.cleaned_data.get("quantity_ordered")
+            observations = form.cleaned_data.get("observations")
             visit = Visit.objects.create(
                 agent_id=agent.id,
                 client_id=client.id,
                 shop_id=shop.id,
                 date_created=date_created,
                 shelf_image=shelf_image,
+                quantity_ordered=quantity_ordered,
+                observations=observations,
             )
             products = form.cleaned_data.get("products")
             for item in products:
                 product = Product.objects.get(id=item)
                 visit.products.add(product)
+
+            ordered_products = form.cleaned_data.get("products_ordered")
+            for item in ordered_products:
+                product = Product.objects.get(id=item)
+                visit.products_ordered.add(product)
             return HttpResponseRedirect(reverse("sales:visits"))
         else:
             print(form.errors)
@@ -463,25 +477,38 @@ def export_storechecks(request):
     # Define and write csv header
     products = Product.objects.all().order_by("name")
     product_list = products.values_list("name", flat=True)
-    header = ["Client"]
+    header = ["Client", "Magazin", "Data", "Produse prezente", "Produse comandate", "Baxuri"]
     for product in product_list:
-        header.append(product)
+        header.append(f"R_{product}")
+    for product in product_list:
+        header.append(f"O_{product}")
+    header.append("Observatii")
     writer.writerow(header)
 
     # Define each row
     for visit in items:
         row = []
 
-        # Add a client name
-        row.append(visit.client)
+        # Add a client, shop, date
+        row.extend([visit.client, visit.shop, visit.date_created])
 
         # Add an X for each product that was on the shelf at that visit
         visit_products = visit.products.values_list("name", flat=True)
+        visit_order_products = visit.products_ordered.values_list("name", flat=True)
+        row.extend([len(visit_products), len(visit_order_products), visit.quantity_ordered])
+
         for product in product_list:
             if product in visit_products:
                 row.append("X")
             else:
                 row.append("")
+
+        for product in product_list:
+            if product in visit_order_products:
+                row.append("X")
+            else:
+                row.append("")
+        row.append(visit.observations)
         writer.writerow(row)
 
     return response
