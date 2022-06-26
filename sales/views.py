@@ -22,6 +22,8 @@ from .models import (
     County,
     ProductInfo,
     PriceEntry,
+    Category,
+    Producer,
 )
 from .forms import VisitForm, PlanForm
 
@@ -400,7 +402,64 @@ def agent_plan_history(request, pk):
 
 # Reports on competition pricing
 def competition_reports(request):
-    return render(request, "sales/competition_reports.html")
+
+    agents = Agent.objects.all().order_by("user")
+    products = ProductInfo.objects.all().order_by("name")
+    categories = Category.objects.all().order_by("name")
+    producers = Producer.objects.all().order_by("name")
+
+    context = {
+        "agents": agents,
+        "products": products,
+        "categories": categories,
+        "producers": producers,
+    }
+    return render(request, "sales/competition_reports.html", context)
+
+
+def by_product_and_agent(request):
+    agent = request.GET.get("a")
+    product = request.GET.get("p")
+
+    if agent and product:
+        items = PriceEntry.objects.filter(agent=agent, product=product)
+    elif product and not agent:
+        items = PriceEntry.objects.filter(product=product)
+    else:
+        items = PriceEntry.objects.all()
+
+    context = {"items": items}
+    return render(request, "sales/competition_reports/by_product_and_agent.html", context)
+
+
+def by_category_and_agent(request):
+    category = request.GET.get("cat")
+    agent = request.GET.get("a")
+
+    if agent and category:
+        items = PriceEntry.objects.filter(agent=agent, product__category=category)
+    elif category and not agent:
+        items = PriceEntry.objects.filter(product__category=category)
+    else:
+        items = PriceEntry.objects.all()
+
+    context = {"items": items}
+    return render(request, "sales/competition_reports/by_category_and_agent.html", context)
+
+
+def by_producer_and_agent(request):
+    producer = request.GET.get("pr")
+    agent = request.GET.get("a")
+
+    if agent and producer:
+        items = PriceEntry.objects.filter(agent=agent, product__producer=producer)
+    elif producer and not agent:
+        items = PriceEntry.objects.filter(product__producer=producer)
+    else:
+        items = PriceEntry.objects.all()
+
+    context = {"items": items}
+    return render(request, "sales/competition_reports/by_producer_and_agent.html", context)
 
 
 def export_competition(request):

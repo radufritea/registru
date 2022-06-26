@@ -3,17 +3,111 @@
 {% block content %}
 
 <main class="container">
+
+    <!-- ### EXPORTA DATELE -->
     <section class="row">
         <div class="col">
             <h1>Rapoarte despre concurență</h1>
+            <a href="{% url 'sales:export_competition' %}" class="btn btn-primary">Exporta in Excel</a>
         </div>
     </section>
-    <!-- ### EXPORTA DATELE -->
-    <div class="col">
-        <h3>Exporta datele</h3>
-        <p>Genereaza un fisier csv care contine toate informatiile despre preturile concurentei colectate pana in
-            prezent de toti agentii. Fisierul csv poate fi deschis cu usurinta in Microsoft Excel.</p>
-        <a href="{% url 'sales:export_competition' %}" class="btn btn-primary">Exporta in Excel</a>
-    </div>
 
-    {% endblock content %}
+    <!-- #### RAPORT DUPA PRODUS, CATEGORIE, PRODUCATOR -->
+    <section class="row">
+        <!-- ### BY PRODUCT & AGENT ### -->
+        <div class="col">
+            <h3>FILTREAZA DUPA PRODUS</h3>
+            <p>Afiseaza informatiile despre concurenta, selectand doar un produs.</p>
+            <form action="{% url 'sales:by_product_and_agent' %}" class="form" method="get">
+                <!-- by product -->
+                <div>
+                    <label for="products">Alege produs:</label>
+                    <select name="p" id="products">
+                        <option disabled selected value> -- toate produsele -- </option>
+                        {% for product in products %}
+                        <option value="{{ product.id }}">{{ product }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- by agent -->
+                <div>
+                    <label for="agents">Alege ASS:</label>
+                    <select name="a" id="agents">
+                        <option disabled selected value> -- toți ASSii -- </option>
+                        {% for agent in agents %}
+                        <option value="{{ agent.id }}">{{ agent }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <input type="submit" value="Caută" class="btn btn-primary">
+                </div>
+            </form>
+        </div>
+
+        <!-- ### BY CATEGORY & AGENT ### -->
+        <div class="col">
+            <h3>FILTREAZA DUPA CATEGORIE</h3>
+            <p>Afiseaza informatiile despre concurenta, selectand o categorie de produse.</p>
+            <form action="{% url 'sales:by_category_and_agent' %}" class="form" method="get">
+                <!-- by category -->
+                <div>
+                    <label for="categories">Alege gama:</label>
+                    <select name="cat" id="categories">
+                        <option disabled selected value> -- toate gamele -- </option>
+                        {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- by agent -->
+                <div>
+                    <label for="agents">Alege ASS:</label>
+                    <select name="a" id="agents">
+                        <option disabled selected value> -- toți ASSii -- </option>
+                        {% for agent in agents %}
+                        <option value="{{ agent.id }}">{{ agent }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <input type="submit" value="Caută" class="btn btn-primary">
+                </div>
+
+            </form>
+        </div>
+
+        <!-- ### BY PRODUCER & AGENT ### -->
+        <div class="col">
+            <h3>FILTREAZA DUPA PRODUCATOR</h3>
+            <p>Afiseaza informatiile despre concurenta, selectand un producator.</p>
+            <form action="{% url 'sales:by_producer_and_agent' %}" class="form" method="get">
+                <!-- by producer  -->
+                <div>
+                    <label for="producers">Alege producator:</label>
+                    <select name="pr" id="producers">
+                        <option disabled selected value> -- toți producătorii -- </option>
+                        {% for producer in producers %}
+                        <option value="{{ producer.id }}">{{ producer }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- by agent -->
+                <div>
+                    <label for="agents">Alege ASS:</label>
+                    <select name="a" id="agents">
+                        <option disabled selected value> -- toți ASSii -- </option>
+                        {% for agent in agents %}
+                        <option value="{{ agent.id }}">{{ agent }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <input type="submit" value="Caută" class="btn btn-primary">
+                </div>
+            </form>
+        </div>
+        {% endblock content %}

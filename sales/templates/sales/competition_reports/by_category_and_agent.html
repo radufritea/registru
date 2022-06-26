@@ -1,0 +1,41 @@
+{% extends 'sales/base.html' %}
+
+{% block content %}
+
+<section class="container">
+    <div class="row">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Magazin</th>
+                    <th>Producator</th>
+                    <th>Brand</th>
+                    <th>Produs</th>
+                    <th>Gramaj</th>
+                    <th>Pret</th>
+                    <th>Data</th>
+                    <th>Gama</th>
+                    <th>Agent</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.shop }}</td>
+                    <td>{{ item.product.producer }}</td>
+                    <td>{{ item.product.brand }}</td>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.product.weight }}</td>
+                    <td>{{ item.price_value }}</td>
+                    <td>{{ item.date_created }}</td>
+                    <td>{{ item.product.category }}</td>
+                    <td>{{ item.agent }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+</main>
+
+{% endblock %}
