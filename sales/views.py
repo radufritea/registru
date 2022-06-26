@@ -77,7 +77,7 @@ def index(request):
                 plan = WeekPlan.objects.get(id=pk)
             # Automaticlly load the plan where today is within start_date and end_date of the plan
             else:
-                plan = WeekPlan.objects.get(start_date=start_date, agent=agent)
+                plan = WeekPlan.objects.filter(agent=agent).latest("start_date")
 
         form = PlanForm(instance=plan)
 
