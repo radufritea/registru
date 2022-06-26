@@ -98,6 +98,7 @@ ADMIN_REORDER = (
             "sales.Visit",
             "sales.WeekPlan",
             "sales.ProductInfo",
+            "sales.PriceEntry",
         ),
     },
 )

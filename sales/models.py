@@ -86,31 +86,31 @@ class Channel(models.Model):
 
 class Client(models.Model):
     name = models.CharField("Numele", max_length=254)
-    loc_name = models.CharField("Numele locatiei", max_length=254, null=True, blank=True)
+    loc_name = models.CharField("Numele locației", max_length=254, null=True, blank=True)
     CUI = models.IntegerField("CUI", blank=True, null=True)
     channel = models.ForeignKey(
         Channel,
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
-        verbose_name="Canal distributie",
+        verbose_name="Canal distribuție",
     )
     distributor = models.BooleanField("Distribuitor", blank=True)
     lka = models.BooleanField("Local Key Accout", blank=True)
     zone = models.ForeignKey(
         Zone, blank=True, null=True, on_delete=models.SET_NULL, verbose_name="Zona"
     )
-    address = models.CharField("Adresa", max_length=254, blank=True)
+    address = models.CharField("Adresă", max_length=254, blank=True)
     city = models.CharField("Localitatea", max_length=50, blank=True)
     county = models.ForeignKey(County, blank=True, null=True, on_delete=models.SET_NULL)
     contact_person = models.CharField("Persoana de contact", max_length=254, blank=True)
-    contact_position = models.CharField("Functia", max_length=254, blank=True, null=True)
+    contact_position = models.CharField("Funcția", max_length=254, blank=True, null=True)
     phone = models.CharField("Telefon", max_length=10, blank=True)
     email = models.EmailField("Email", max_length=100, blank=True)
 
     class Meta:
         verbose_name = "client"
-        verbose_name_plural = "clienti"
+        verbose_name_plural = "clienți"
 
     def __str__(self):
         return self.name
@@ -161,7 +161,7 @@ class Visit(models.Model):
     observations = models.TextField(blank=True, null=True)
 
     class Meta:
-        verbose_name = "vizita"
+        verbose_name = "vizită"
         verbose_name_plural = "vizite"
 
     def __str__(self):
@@ -222,8 +222,8 @@ class WeekPlan(models.Model):
     friday_achieved = models.TextField(blank=True)
 
     class Meta:
-        verbose_name = "plan saptamanal"
-        verbose_name_plural = "planuri saptamanale"
+        verbose_name = "plan săptămânal"
+        verbose_name_plural = "planuri săptămânale"
 
 
 class Brand(models.Model):
@@ -234,7 +234,7 @@ class Brand(models.Model):
 
 
 class Producer(models.Model):
-    name = models.CharField("Producator", max_length=100)
+    name = models.CharField("Producător", max_length=100)
 
     def __str__(self):
         return self.name
@@ -256,8 +256,8 @@ class ProductInfo(models.Model):
     producer = models.ForeignKey("Producer", on_delete=models.CASCADE, verbose_name="producator")
 
     class Meta:
-        verbose_name = "produs concurenta"
-        verbose_name_plural = "produse concurenta"
+        verbose_name = "produs concurență"
+        verbose_name_plural = "produse concurență"
 
     def __str__(self):
         product_name = f"{self.brand} - {self.name}"
@@ -289,5 +289,5 @@ class PriceEntry(models.Model):
     last_modified = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "inregistrare pret"
-        verbose_name_plural = "inregistrari pret"
+        verbose_name = "înregistrare preț"
+        verbose_name_plural = "înregistrări preț"

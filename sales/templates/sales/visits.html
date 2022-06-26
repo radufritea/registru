@@ -3,7 +3,7 @@
 {% block content %}
 <main class="container">
 	<section class="row">
-		<h1>Vizite de piață</h1>
+		<h2>Vizite de piață</h2>
 		<div class="d-grid gap-2 d-md-flex justify-content-md-end">
 			<a href="{% url 'sales:select_client' %}?source=visits" class="btn btn-primary me-md-2">Vizită nouă</a>
 		</div>
@@ -35,23 +35,25 @@
 				</tbody>
 			</table>
 			<nav aria-label="Page navigation example">
-                <ul class="pagination">
-                {% if page_obj.has_previous %}
-                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Înapoi</a></li>
-                {% else %}
-                <li class="page-item disabled"><a class="page-link" href="#">Înapoi</a></li>
-                {% endif %}
-                    <!-- <li class="page-item"><a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a></li> -->
-                {% for page in page_obj.paginator.page_range %}
-                    <li class="page-item"><a class="page-link" href="?page={{ page }} #vizite">{{ page }}</a></li>
-                {% endfor %}
-                {% if page_obj.has_next %}
-                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Înainte</a></li>
-                {% else %}
-                    <li class="page-item disabled"><a class="page-link" href="#">Înainte</a></li>
-                {% endif %}
-                </ul>
-            </nav>
+				<ul class="pagination">
+					{% if page_obj.has_previous %}
+					<li class="page-item"><a class="page-link"
+							href="?page={{ page_obj.previous_page_number }}">Înapoi</a></li>
+					{% else %}
+					<li class="page-item disabled"><a class="page-link" href="#">Înapoi</a></li>
+					{% endif %}
+					<!-- <li class="page-item"><a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a></li> -->
+					{% for page in page_obj.paginator.page_range %}
+					<li class="page-item"><a class="page-link" href="?page={{ page }} #vizite">{{ page }}</a></li>
+					{% endfor %}
+					{% if page_obj.has_next %}
+					<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Înainte</a>
+					</li>
+					{% else %}
+					<li class="page-item disabled"><a class="page-link" href="#">Înainte</a></li>
+					{% endif %}
+				</ul>
+			</nav>
 		</div>
 	</section>
 </main>

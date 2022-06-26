@@ -414,7 +414,7 @@ def competition_reports(request):
         "categories": categories,
         "producers": producers,
     }
-    return render(request, "sales/competition_reports.html", context)
+    return render(request, "sales/competition_reports/filter.html", context)
 
 
 def by_product_and_agent(request):

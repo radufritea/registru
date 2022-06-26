@@ -8,7 +8,7 @@
     <section class="row">
         <div class="col">
             <h1>Rapoarte despre concurență</h1>
-            <a href="{% url 'sales:export_competition' %}" class="btn btn-primary">Exporta in Excel</a>
+            <a href="{% url 'sales:export_competition' %}" class="btn btn-primary">Exportă în format csv</a>
         </div>
     </section>
 
@@ -16,8 +16,8 @@
     <section class="row">
         <!-- ### BY PRODUCT & AGENT ### -->
         <div class="col">
-            <h3>FILTREAZA DUPA PRODUS</h3>
-            <p>Afiseaza informatiile despre concurenta, selectand doar un produs.</p>
+            <h4>Filtrează după produs</h4>
+            <p>Afișează informațiile despre concurență, selectând doar un produs.</p>
             <form action="{% url 'sales:by_product_and_agent' %}" class="form" method="get">
                 <!-- by product -->
                 <div>
@@ -48,8 +48,8 @@
 
         <!-- ### BY CATEGORY & AGENT ### -->
         <div class="col">
-            <h3>FILTREAZA DUPA CATEGORIE</h3>
-            <p>Afiseaza informatiile despre concurenta, selectand o categorie de produse.</p>
+            <h3>Filtrează după categorie</h3>
+            <p>Afișează informațiile despre concurență selectând o categorie de produse.</p>
             <form action="{% url 'sales:by_category_and_agent' %}" class="form" method="get">
                 <!-- by category -->
                 <div>
@@ -81,12 +81,12 @@
 
         <!-- ### BY PRODUCER & AGENT ### -->
         <div class="col">
-            <h3>FILTREAZA DUPA PRODUCATOR</h3>
-            <p>Afiseaza informatiile despre concurenta, selectand un producator.</p>
+            <h3>Filtrează după producător</h3>
+            <p>Afișează informațiile despre concurență selectând un producator.</p>
             <form action="{% url 'sales:by_producer_and_agent' %}" class="form" method="get">
                 <!-- by producer  -->
                 <div>
-                    <label for="producers">Alege producator:</label>
+                    <label for="producers">Alege producător:</label>
                     <select name="pr" id="producers">
                         <option disabled selected value> -- toți producătorii -- </option>
                         {% for producer in producers %}

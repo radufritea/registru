@@ -2,22 +2,26 @@
 
 {% block content %}
 <section class="container">
-	<div class="row">
-        <h1>Planificari saptamanale (raport)</h1>
-
-        <h4>Saptamana curenta</h4>
-
-        {% for agent in agents %}
-        <p><a href="{% url 'sales:agent_plan_current' agent.id %}">{{ agent }}</a></p>
-        {% endfor %}
-
-
-        <h4>Istoric</h4>
-
-        {% for agent in agents %}
-        <p><a href="{% url 'sales:agent_plan_history' agent.id %}">{{ agent }}</a></p>
-        {% endfor %}
+    <div class="row">
+        <h2>Raport planificari saptamanale</h2>
     </div>
+</section>
+<section class="container">
+    <div class="row">
+        <div class="col">
+            <h4>Saptamana curenta</h4>
+            {% for agent in agents %}
+            <p><a href="{% url 'sales:agent_plan_current' agent.id %}">{{ agent }}</a></p>
+            {% endfor %}
+        </div>
+        <div class="col">
+            <h4>Istoric</h4>
+            {% for agent in agents %}
+            <p><a href="{% url 'sales:agent_plan_history' agent.id %}">{{ agent }}</a></p>
+            {% endfor %}
+        </div>
+    </div>
+
 </section>
 
 {% endblock %}
